@@ -7,11 +7,26 @@
 //
 
 import UIKit
+import Moya
 
 class ContactsViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    testMoya()
   }
-
+  
+  private func testMoya() {
+    let provider = MoyaProvider<Contacts>()
+    provider.rx.request(.getContacts(file: 1)).subscribe { event in
+      switch event {
+      case .success(let response):
+        print("response:\(response)")
+      case .error(let error):
+        print("Error", error)
+      }
+    }
+  }
+  
 }
