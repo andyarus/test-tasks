@@ -18,26 +18,26 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVK-pF-m4a">
-                        <rect key="frame" x="0.0" y="7" width="49" height="21"/>
+                        <rect key="frame" x="15" y="7" width="49" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnj-61-UEq">
-                        <rect key="frame" x="0.0" y="32" width="49" height="21"/>
+                        <rect key="frame" x="15" y="32" width="49" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temperament" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMU-a1-j3X">
-                        <rect key="frame" x="59" y="22" width="194" height="21"/>
+                        <rect key="frame" x="74" y="22" width="179" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="wnj-61-UEq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="0us-m2-HNQ"/>
+                    <constraint firstItem="wnj-61-UEq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="0us-m2-HNQ"/>
                     <constraint firstAttribute="bottom" secondItem="wnj-61-UEq" secondAttribute="bottom" constant="11" id="Gla-zS-YDI"/>
                     <constraint firstItem="yMU-a1-j3X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="KrA-BS-34p"/>
                     <constraint firstAttribute="bottom" secondItem="yMU-a1-j3X" secondAttribute="bottom" constant="21" id="PAs-Zk-YZb"/>
@@ -46,7 +46,7 @@
                     <constraint firstItem="yMU-a1-j3X" firstAttribute="leading" secondItem="wnj-61-UEq" secondAttribute="trailing" constant="10" id="Vqn-pR-YG8"/>
                     <constraint firstItem="yMU-a1-j3X" firstAttribute="leading" secondItem="BVK-pF-m4a" secondAttribute="trailing" constant="10" id="bhy-NH-Fbe"/>
                     <constraint firstAttribute="trailing" secondItem="yMU-a1-j3X" secondAttribute="trailing" constant="40" id="ctj-e3-4k9"/>
-                    <constraint firstItem="BVK-pF-m4a" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="l8p-f0-pUb"/>
+                    <constraint firstItem="BVK-pF-m4a" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="l8p-f0-pUb"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

@@ -65,10 +65,10 @@ class ContactsViewController: UIViewController {
   
   private func setupConstraints() {
     let tableViewConstraints: [NSLayoutConstraint] = [
-      view.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
-      view.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0.0),
-      view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0.0),
-      view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0.0),
+      view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0.0),
+      view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0.0)
     ]
     
     NSLayoutConstraint.activate(
@@ -102,7 +102,9 @@ extension ContactsViewController: UITableViewDataSource {
 extension ContactsViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+    let contact = viewModel.contacts[indexPath.row]
+    let vc = ProfileViewController(contact: contact)
+    navigationController?.pushViewController(vc, animated: true)
   }
   
 }

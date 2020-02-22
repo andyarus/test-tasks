@@ -12,4 +12,13 @@ extension DateFormatter {
   
   static let iso8601 = ISO8601DateFormatter()
   
+  static func string(from educationPeriod: EducationPeriod) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd.MM.yyyy"
+    
+    let startDateString = formatter.string(from: educationPeriod.start)
+    let endDateString = formatter.string(from: educationPeriod.end)
+    return "\(startDateString) - \(endDateString)"
+  }
+  
 }

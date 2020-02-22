@@ -23,6 +23,7 @@
 		924A70202401753E007F40DD /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A701E2401753E007F40DD /* ContactTableViewCell.swift */; };
 		924A70212401753E007F40DD /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 924A701F2401753E007F40DD /* ContactTableViewCell.xib */; };
 		924A702324017656007F40DD /* Temperament.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A702224017656007F40DD /* Temperament.swift */; };
+		924A70252401B8F0007F40DD /* String+CapitalizingFirstLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */; };
 		9F2513B0F6A84C344CE52A5E /* Pods_Contacts_ContactsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AB76B159903E4EBA52D2675 /* Pods_Contacts_ContactsUITests.framework */; };
 		E511FB6028E83D9D6973F8D5 /* Pods_Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41680502F95F35562B68BA4A /* Pods_Contacts.framework */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		924A701E2401753E007F40DD /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		924A701F2401753E007F40DD /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
 		924A702224017656007F40DD /* Temperament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperament.swift; sourceTree = "<group>"; };
+		924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CapitalizingFirstLetter.swift"; sourceTree = "<group>"; };
 		9694D23F875623564BD1FD19 /* Pods-ContactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsTests.release.xcconfig"; path = "Target Support Files/Pods-ContactsTests/Pods-ContactsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C20DDD5185C96E0CAB610DDC /* Pods-Contacts-ContactsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts-ContactsUITests.release.xcconfig"; path = "Target Support Files/Pods-Contacts-ContactsUITests/Pods-Contacts-ContactsUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -275,6 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				924A701024016064007F40DD /* DateFormatter+ISO8601.swift */,
+				924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				924A70252401B8F0007F40DD /* String+CapitalizingFirstLetter.swift in Sources */,
 				924A702324017656007F40DD /* Temperament.swift in Sources */,
 				9243E8D023FB1C9D007A3DE9 /* ProfileViewController.swift in Sources */,
 				9243953C23FDB8CF00173997 /* ContactsEndpoints.swift in Sources */,
@@ -726,7 +730,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Contacts/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -735,7 +739,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -747,7 +751,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Contacts/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -756,7 +760,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

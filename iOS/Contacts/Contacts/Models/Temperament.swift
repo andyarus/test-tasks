@@ -13,3 +13,11 @@ enum Temperament: String, Decodable {
     sanguine,
     choleric
 }
+
+extension Temperament {
+  
+  func value() -> String {
+    return rawValue.capitalizingFirstLetter()
+  }
+  
+}
