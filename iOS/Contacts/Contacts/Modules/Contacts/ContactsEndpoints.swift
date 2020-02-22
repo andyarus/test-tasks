@@ -9,7 +9,7 @@
 import Moya
 
 public enum Contacts {
-  case contacts(file: Int)
+  case contacts(page: Int)
 }
 
 extension Contacts: TargetType {
@@ -18,8 +18,8 @@ extension Contacts: TargetType {
   
   public var path: String {
     switch self {
-    case .contacts(let file):
-      return String(format: "/SkbkonturMobile/mobile-test-ios/master/json/generated-%02d.json", file)
+    case .contacts(let page):
+      return String(format: "/SkbkonturMobile/mobile-test-ios/master/json/generated-%02d.json", page)
     }
   }
   

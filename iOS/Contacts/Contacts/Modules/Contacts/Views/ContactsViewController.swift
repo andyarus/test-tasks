@@ -18,7 +18,6 @@ class ContactsViewController: UIViewController {
   // MARK: - Private Properties
   
   private var disposeBag = DisposeBag()
-  private var contacts = [Contact]()
   
   // MARK: - Private View Properties
   
@@ -40,15 +39,11 @@ class ContactsViewController: UIViewController {
   
   private func bindViewModel() {
     viewModel.getContacts()
-      .subscribe(onSuccess: { [unowned self] contacts in
-        print("contacts:\(contacts.count) \(contacts[0])")
-        
-        self.contacts = contacts
+      .subscribe(onSuccess: { [unowned self] _ in
         self.tableView.reloadData()
       }, onError: { error in
         print("Error getting contacts", error)
-      })
-      .disposed(by: disposeBag)
+      }).disposed(by: disposeBag)
   }
   
   private func addSubviews() {
@@ -88,13 +83,13 @@ class ContactsViewController: UIViewController {
 extension ContactsViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return contacts.count
+    return viewModel.contacts.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.reuseIdentifier) as! ContactTableViewCell
     
-    let contact = contacts[indexPath.row]
+    let contact = viewModel.contacts[indexPath.row]
     cell.configure(for: contact)
     
     return cell
