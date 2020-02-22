@@ -7,26 +7,24 @@
 //
 
 import UIKit
-import Moya
 
 class ContactsViewController: UIViewController {
+  
+  // MARK: - Properties
+  
+  public var viewModel: ContactsViewModel!
+  
+  // MARK: - Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    testMoya()
-  }
-  
-  private func testMoya() {
-    let provider = MoyaProvider<Contacts>()
-    provider.rx.request(.getContacts(file: 1)).subscribe { event in
-      switch event {
-      case .success(let response):
-        print("response:\(response)")
-      case .error(let error):
-        print("Error", error)
-      }
-    }
+    viewModel.getContacts()
+      .subscribe(onSuccess: { contacts in
+        print("contacts:\(contacts.count) \(contacts[0])")
+      }, onError: { error in
+        print("Error getting contacts", error)
+      })
   }
   
 }
