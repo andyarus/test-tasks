@@ -12,6 +12,6 @@ struct Contact: Decodable {
   let phone: String
   let height: Double
   let biography: String
-  let temperament: String
+  let temperament: Temperament
   let educationPeriod: EducationPeriod
 }

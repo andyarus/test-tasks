@@ -20,6 +20,9 @@
 		924A700E24012B8A007F40DD /* EducationPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A700D24012B8A007F40DD /* EducationPeriod.swift */; };
 		924A701124016064007F40DD /* DateFormatter+ISO8601.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A701024016064007F40DD /* DateFormatter+ISO8601.swift */; };
 		924A701324016237007F40DD /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A701224016237007F40DD /* ContactsViewModel.swift */; };
+		924A70202401753E007F40DD /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A701E2401753E007F40DD /* ContactTableViewCell.swift */; };
+		924A70212401753E007F40DD /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 924A701F2401753E007F40DD /* ContactTableViewCell.xib */; };
+		924A702324017656007F40DD /* Temperament.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A702224017656007F40DD /* Temperament.swift */; };
 		9F2513B0F6A84C344CE52A5E /* Pods_Contacts_ContactsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AB76B159903E4EBA52D2675 /* Pods_Contacts_ContactsUITests.framework */; };
 		E511FB6028E83D9D6973F8D5 /* Pods_Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41680502F95F35562B68BA4A /* Pods_Contacts.framework */; };
 /* End PBXBuildFile section */
@@ -67,6 +70,9 @@
 		924A700D24012B8A007F40DD /* EducationPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EducationPeriod.swift; sourceTree = "<group>"; };
 		924A701024016064007F40DD /* DateFormatter+ISO8601.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+ISO8601.swift"; sourceTree = "<group>"; };
 		924A701224016237007F40DD /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
+		924A701E2401753E007F40DD /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+		924A701F2401753E007F40DD /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
+		924A702224017656007F40DD /* Temperament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperament.swift; sourceTree = "<group>"; };
 		9694D23F875623564BD1FD19 /* Pods-ContactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsTests.release.xcconfig"; path = "Target Support Files/Pods-ContactsTests/Pods-ContactsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C20DDD5185C96E0CAB610DDC /* Pods-Contacts-ContactsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts-ContactsUITests.release.xcconfig"; path = "Target Support Files/Pods-Contacts-ContactsUITests/Pods-Contacts-ContactsUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -212,6 +218,7 @@
 		9243E8C723FB1BF7007A3DE9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				924A701424016BED007F40DD /* Cells */,
 				9243E8CD23FB1C88007A3DE9 /* ContactsViewController.swift */,
 			);
 			path = Views;
@@ -259,6 +266,7 @@
 			children = (
 				924A700B24012B08007F40DD /* Contact.swift */,
 				924A700D24012B8A007F40DD /* EducationPeriod.swift */,
+				924A702224017656007F40DD /* Temperament.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -269,6 +277,23 @@
 				924A701024016064007F40DD /* DateFormatter+ISO8601.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		924A701424016BED007F40DD /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				924A701524016BFA007F40DD /* ContactTableViewCell */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		924A701524016BFA007F40DD /* ContactTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				924A701E2401753E007F40DD /* ContactTableViewCell.swift */,
+				924A701F2401753E007F40DD /* ContactTableViewCell.xib */,
+			);
+			path = ContactTableViewCell;
 			sourceTree = "<group>";
 		};
 		AACD2030DAC46A7CE350A1D1 /* Pods */ = {
@@ -393,6 +418,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				924A70212401753E007F40DD /* ContactTableViewCell.xib in Resources */,
 				9243E89E23FB183B007A3DE9 /* LaunchScreen.storyboard in Resources */,
 				9243E89B23FB183B007A3DE9 /* Assets.xcassets in Resources */,
 			);
@@ -522,12 +548,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				924A702324017656007F40DD /* Temperament.swift in Sources */,
 				9243E8D023FB1C9D007A3DE9 /* ProfileViewController.swift in Sources */,
 				9243953C23FDB8CF00173997 /* ContactsEndpoints.swift in Sources */,
 				924A700C24012B08007F40DD /* Contact.swift in Sources */,
 				924A700E24012B8A007F40DD /* EducationPeriod.swift in Sources */,
 				9243E89223FB183A007A3DE9 /* AppDelegate.swift in Sources */,
 				924A701324016237007F40DD /* ContactsViewModel.swift in Sources */,
+				924A70202401753E007F40DD /* ContactTableViewCell.swift in Sources */,
 				924A701124016064007F40DD /* DateFormatter+ISO8601.swift in Sources */,
 				9243E8CE23FB1C88007A3DE9 /* ContactsViewController.swift in Sources */,
 			);
