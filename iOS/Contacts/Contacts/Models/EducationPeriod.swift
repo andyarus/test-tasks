@@ -9,16 +9,11 @@
 import Foundation
 
 import RealmSwift
-import Realm
 
 @objcMembers
 class EducationPeriod: Object, Decodable {
   dynamic var start: Date? = nil
   dynamic var end: Date? = nil
-  
-//  override static func primaryKey() -> String? {
-//    return "id"
-//  }
   
 //  required init() {
 //    super.init()
@@ -58,10 +53,6 @@ class EducationPeriod: Object, Decodable {
   }
   
 }
-
-
-
-
 
 //struct EducationPeriod {
 //  let start: Date

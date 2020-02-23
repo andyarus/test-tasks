@@ -7,7 +7,6 @@
 //
 
 import RealmSwift
-import Realm
 
 @objcMembers
 class Contact: Object, Decodable {

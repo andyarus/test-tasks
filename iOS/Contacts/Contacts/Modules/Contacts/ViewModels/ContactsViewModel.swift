@@ -8,16 +8,15 @@
 
 import Moya
 import RxSwift
-import RealmSwift
-import RxRealm
 
 class ContactsViewModel {
   
   // MARK: Private Properties
   
   private var disposeBag = DisposeBag()
-  let provider = MoyaProvider<Contacts>()
+  private let provider = MoyaProvider<Contacts>()
   //let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
+  private let databaseService = DatabaseService()
   
   // MARK: Public Properties
   
@@ -52,17 +51,25 @@ class ContactsViewModel {
         //observer.on(.completed)
         
         
+//        do {
+//
+//        let realm = try Realm()
+//        print(realm.configuration.fileURL?.absoluteString ?? "")
         
-//        let realm = try! Realm()
-//        realm.objects(Contact.self).asObservable()
-//          .subscribeNext { [unowned self] contacts in
-//            //self?.tableView.reloadData()
-//            print()
-//            print("REALM")
-//            print("contacts.count")
-//          }
+        let contacts = self.databaseService.read()
+        print("realmContacts:\(contacts.count)")
         
         
+        
+        let startTime = DispatchTime.now()
+        
+        self.databaseService.update(with: self.contacts)
+        
+        let endTime = DispatchTime.now()
+        let diffTimeNs = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let diffTimeS = Double(diffTimeNs) / 1_000_000_000
+
+        print("diffTime:\(diffTimeS) s diffTime:\(diffTimeNs) ns")
         
       }, onDisposed: {
         print("Disposed")

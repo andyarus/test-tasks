@@ -24,6 +24,7 @@
 		924A70212401753E007F40DD /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 924A701F2401753E007F40DD /* ContactTableViewCell.xib */; };
 		924A702324017656007F40DD /* Temperament.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A702224017656007F40DD /* Temperament.swift */; };
 		924A70252401B8F0007F40DD /* String+CapitalizingFirstLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */; };
+		925D742E240301CD00D0438D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925D742D240301CD00D0438D /* DatabaseService.swift */; };
 		9F2513B0F6A84C344CE52A5E /* Pods_Contacts_ContactsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AB76B159903E4EBA52D2675 /* Pods_Contacts_ContactsUITests.framework */; };
 		E511FB6028E83D9D6973F8D5 /* Pods_Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41680502F95F35562B68BA4A /* Pods_Contacts.framework */; };
 /* End PBXBuildFile section */
@@ -75,6 +76,7 @@
 		924A701F2401753E007F40DD /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
 		924A702224017656007F40DD /* Temperament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperament.swift; sourceTree = "<group>"; };
 		924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CapitalizingFirstLetter.swift"; sourceTree = "<group>"; };
+		925D742D240301CD00D0438D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		9694D23F875623564BD1FD19 /* Pods-ContactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsTests.release.xcconfig"; path = "Target Support Files/Pods-ContactsTests/Pods-ContactsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C20DDD5185C96E0CAB610DDC /* Pods-Contacts-ContactsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts-ContactsUITests.release.xcconfig"; path = "Target Support Files/Pods-Contacts-ContactsUITests/Pods-Contacts-ContactsUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -142,12 +144,13 @@
 		9243E89023FB183A007A3DE9 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				9243E89123FB183A007A3DE9 /* AppDelegate.swift */,
 				924A700F2401604C007F40DD /* Extensions */,
 				924A700824012AE4007F40DD /* Models */,
 				9243E8C423FB1B6B007A3DE9 /* Modules */,
 				9243E8C323FB1B6A007A3DE9 /* Resources */,
+				925D742C240301BC00D0438D /* Services */,
 				9243E8C223FB1B67007A3DE9 /* Supporting Files */,
-				9243E89123FB183A007A3DE9 /* AppDelegate.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -297,6 +300,14 @@
 				924A701F2401753E007F40DD /* ContactTableViewCell.xib */,
 			);
 			path = ContactTableViewCell;
+			sourceTree = "<group>";
+		};
+		925D742C240301BC00D0438D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				925D742D240301CD00D0438D /* DatabaseService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		AACD2030DAC46A7CE350A1D1 /* Pods */ = {
@@ -557,6 +568,7 @@
 				9243953C23FDB8CF00173997 /* ContactsEndpoints.swift in Sources */,
 				924A700C24012B08007F40DD /* Contact.swift in Sources */,
 				924A700E24012B8A007F40DD /* EducationPeriod.swift in Sources */,
+				925D742E240301CD00D0438D /* DatabaseService.swift in Sources */,
 				9243E89223FB183A007A3DE9 /* AppDelegate.swift in Sources */,
 				924A701324016237007F40DD /* ContactsViewModel.swift in Sources */,
 				924A70202401753E007F40DD /* ContactTableViewCell.swift in Sources */,
