@@ -141,7 +141,7 @@ class ProfileViewController: UIViewController {
   
   private func setupData() {
     nameLabel.text = contact.name
-    educationPeriodLabel.text = DateFormatter.string(from: contact.educationPeriod)
+    //educationPeriodLabel.text = DateFormatter.string(from: contact.educationPeriod)
     temperamentLabel.text = contact.temperament.value()
     phoneButton.setTitle(contact.phone, for: .normal)
     biographyLabel.text = contact.biography

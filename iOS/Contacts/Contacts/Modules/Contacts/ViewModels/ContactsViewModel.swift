@@ -8,6 +8,8 @@
 
 import Moya
 import RxSwift
+import RealmSwift
+import RxRealm
 
 class ContactsViewModel {
   
@@ -20,7 +22,6 @@ class ContactsViewModel {
   // MARK: Public Properties
   
   public var contacts = [Contact]()
-  //public var matchingСontacts = [Contact]()
   public let contactsSubject = PublishSubject<[Contact]>()
   
   // MARK: Public Methods
@@ -43,10 +44,26 @@ class ContactsViewModel {
       }, onCompleted: {
         print("Completed")
         print("contacts:\(self.contacts.count) \(self.contacts[0])")
+        
+        print("self.contacts[0].temperament:\(self.contacts[1].temperament)")
 
         //observer.on(.next(self.contacts))
         self.contactsSubject.onNext(self.contacts)
         //observer.on(.completed)
+        
+        
+        
+//        let realm = try! Realm()
+//        realm.objects(Contact.self).asObservable()
+//          .subscribeNext { [unowned self] contacts in
+//            //self?.tableView.reloadData()
+//            print()
+//            print("REALM")
+//            print("contacts.count")
+//          }
+        
+        
+        
       }, onDisposed: {
         print("Disposed")
       }).disposed(by: self.disposeBag)
