@@ -7,7 +7,7 @@
 //
 
 import RealmSwift
-import RxRealm
+//import RxRealm
 import RxSwift
 
 class DatabaseService {
@@ -49,10 +49,18 @@ class DatabaseService {
   
   /// Update in the same thred
   public func update(with contacts: [Contact]) {
+    
+    //delete()
+    
     do {
+      print()
+      print("update")
       let realm = try Realm()
       try realm.write {
+        print("write")
+        //realm.beginWrite()
         realm.add(contacts, update: .modified)
+        //try realm.commitWrite()
       }
     } catch let error as NSError {
       print("Error on Realm update", error)
@@ -120,41 +128,41 @@ class DatabaseService {
 
 // MARK: - Background Thread Processing
 
-extension Realm {
-  
-  /// https://realm.io/docs/cookbook/swift/object-to-background/
-  
-  func writeAsync<T : ThreadConfined>(
-    _ object: T,
-    errorHandler: @escaping ((_ error : Swift.Error) -> Void) = { _ in return },
-    block: @escaping ((Realm, T?) -> Void))
-  {
-    let wrappedObject = ThreadSafeReference(to: object)
-    let config = self.configuration
-    DispatchQueue.global(qos: .background).async {
-      autoreleasepool {
-        do {
-          let realm = try Realm(configuration: config)
-          let resolveObject = realm.resolve(wrappedObject)
-
-          try realm.write {
-            block(realm, resolveObject)
-          }
-        }
-        catch {
-          errorHandler(error)
-        }
-      }
-    }
-  }
-  
-  func writeArrayAsync<T: Object>(objects: [T]) {
-    for object in objects {
-      self.writeAsync(object) { (realm, itemToSave) in
-        guard itemToSave != nil else { return }
-        realm.add(itemToSave!, update: .modified)
-      }
-    }
-  }
-  
-}
+//extension Realm {
+//  
+//  /// https://realm.io/docs/cookbook/swift/object-to-background/
+//  
+//  func writeAsync<T : ThreadConfined>(
+//    _ object: T,
+//    errorHandler: @escaping ((_ error : Swift.Error) -> Void) = { _ in return },
+//    block: @escaping ((Realm, T?) -> Void))
+//  {
+//    let wrappedObject = ThreadSafeReference(to: object)
+//    let config = self.configuration
+//    DispatchQueue.global(qos: .background).async {
+//      autoreleasepool {
+//        do {
+//          let realm = try Realm(configuration: config)
+//          let resolveObject = realm.resolve(wrappedObject)
+//
+//          try realm.write {
+//            block(realm, resolveObject)
+//          }
+//        }
+//        catch {
+//          errorHandler(error)
+//        }
+//      }
+//    }
+//  }
+//  
+//  func writeArrayAsync<T: Object>(objects: [T]) {
+//    for object in objects {
+//      self.writeAsync(object) { (realm, itemToSave) in
+//        guard itemToSave != nil else { return }
+//        realm.add(itemToSave!, update: .modified)
+//      }
+//    }
+//  }
+//  
+//}

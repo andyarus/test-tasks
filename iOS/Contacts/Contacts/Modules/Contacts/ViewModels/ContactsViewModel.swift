@@ -51,10 +51,10 @@ class ContactsViewModel {
   
   public func loadData() {
     //workQueue.async { [unowned self] in
-    DispatchQueue.global(qos: .background).async { [unowned self] in
+    //DispatchQueue.global(qos: .background).async { [unowned self] in
       print("load data thread:\(Thread.current)")
       self.getContacts()
-    }
+    //}
   }
   
   public func getContacts() {
@@ -110,9 +110,13 @@ class ContactsViewModel {
         
         
 
-          
+        DispatchQueue.main.async {
+          self.databaseService.update(with: self._contacts)
+        }
         
-        self.databaseService.update(with: self._contacts, qos: .background)
+        
+        
+        //self.databaseService.update(with: self._contacts, qos: .background)
         //self.databaseService.update(with: self._contacts, in: self.backgroundQueue)
         self.lastUpdateTime = Date().timeIntervalSince1970
         
@@ -190,9 +194,14 @@ class ContactsViewModel {
 //    return Observable.just(matchingСontacts)
 //  }
   
+  public func contact(at pos: Int) -> Contact? {
+    guard pos < _contacts.count else { return nil }
+    return _contacts[pos]
+  }
+  
   // MARK: Private Methods
   
-  public func getMergedPages(forMax max: Int) -> Observable<[Contact]> {
+  private func getMergedPages(forMax max: Int) -> Observable<[Contact]> {
     var pagesObservable = [Observable<[Contact]>]()
     for i in 1...max {
       pagesObservable.append(getNext(for: i))

@@ -27,9 +27,11 @@ class EducationPeriod: Object, Decodable {
     
     let startDateString = try container.decode(String.self, forKey: .start)
     let endDateString = try container.decode(String.self, forKey: .end)
+
+    
     guard
-      let startDate = DateFormatter.iso8601.date(from: startDateString),
-      let endDate = DateFormatter.iso8601.date(from: endDateString)
+      let startDate = startDateString.toDate(),
+      let endDate = endDateString.toDate()
       else {
       throw DecodingError.dataCorruptedError(forKey: .start,
                                              in: container,

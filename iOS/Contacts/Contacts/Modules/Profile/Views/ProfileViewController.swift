@@ -71,6 +71,10 @@ class ProfileViewController: UIViewController {
     setup()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+  }
+  
   private func setup() {
     addSubviews()
     setupUI()
@@ -88,6 +92,13 @@ class ProfileViewController: UIViewController {
   
   private func setupUI() {
     view.backgroundColor = .white
+    
+    setupNavigationBar()
+  }
+  
+  private func setupNavigationBar() {
+    /// Clear back button text
+    navigationController?.navigationBar.topItem?.title = ""
   }
   
   private func setupConstraints() {    
@@ -141,7 +152,7 @@ class ProfileViewController: UIViewController {
   
   private func setupData() {
     nameLabel.text = contact.name
-    //educationPeriodLabel.text = DateFormatter.string(from: contact.educationPeriod)
+    educationPeriodLabel.text = contact.educationPeriod?.toString()
     temperamentLabel.text = contact.temperament.value()
     phoneButton.setTitle(contact.phone, for: .normal)
     biographyLabel.text = contact.biography

@@ -22,6 +22,7 @@ class ContactsViewController: UIViewController {
   
   // MARK: - Private View Properties
   
+  private var searchController: UISearchController!
   private let tableView = UITableView()
   private let indicatorView = UIActivityIndicatorView()
   private lazy var errorView = ErrorView(parent: view)
@@ -50,6 +51,14 @@ class ContactsViewController: UIViewController {
   }
   
   private func bindViewModel() {
+    searchController.searchBar.rx.text.orEmpty
+      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+      .distinctUntilChanged()
+      .subscribe(onNext: { [unowned self] filter in
+        self.viewModel.loadData(with: filter)
+      })
+      .disposed(by: disposeBag)
+    
     tableView.refreshControl?.rx.controlEvent(.valueChanged)
       .map { self.tableView.refreshControl?.isRefreshing }
       .filter { $0 == true }
@@ -74,6 +83,27 @@ class ContactsViewController: UIViewController {
         self.errorView.show()
         self.endRefreshing()
       }).disposed(by: disposeBag)
+    
+    tableView.rx.itemSelected
+      .observeOn(MainScheduler.instance)
+      .subscribe(onNext: { [unowned self] indexPath in
+        
+        DispatchQueue.main.async {
+
+        guard let contact = self.viewModel.contact(at: indexPath.row) else { return }
+        let vc = ProfileViewController(contact: contact)
+        self.navigationController?.pushViewController(vc, animated: true)
+          
+        }
+        
+      }).disposed(by: disposeBag)
+    
+//    tableView.rx.modelSelected(Contact.self)
+//      .observeOn(MainScheduler.instance)
+//      .subscribe(onNext: { [unowned self] model in
+//        print("model:\(model)")
+//      }).disposed(by: disposeBag)
+    
   }
   
   private func endRefreshing() {
@@ -96,18 +126,18 @@ class ContactsViewController: UIViewController {
   }
   
   private func setupSearchController() {
-    let searchController = UISearchController(searchResultsController: nil)
+    searchController = UISearchController(searchResultsController: nil)
     searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search"
     navigationItem.searchController = searchController
     
-    searchController.searchBar.rx.text.orEmpty
-      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-      .distinctUntilChanged()
-      .subscribe(onNext: { [unowned self] filter in
-        self.viewModel.loadData(with: filter)
-      })
-      .disposed(by: disposeBag)
+//    searchController.searchBar.rx.text.orEmpty
+//      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+//      .distinctUntilChanged()
+//      .subscribe(onNext: { [unowned self] filter in
+//        self.viewModel.loadData(with: filter)
+//      })
+//      .disposed(by: disposeBag)
     
 //    let searchResults = searchController.searchBar.rx.text.orEmpty
 //      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
@@ -151,12 +181,6 @@ class ContactsViewController: UIViewController {
     indicatorView.hidesWhenStopped = true
   }
   
-//  @objc
-//  func refreshWeatherData(_ sender: Any) {
-//    print("refreshWeatherData")
-//    //viewModel.loadData()
-//  }
-  
   private func setupConstraints() {
     let tableViewConstraints: [NSLayoutConstraint] = [
       view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
@@ -165,14 +189,8 @@ class ContactsViewController: UIViewController {
       view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 20.0)
     ]
     
-    let indicatorViewConstraints: [NSLayoutConstraint] = [
-      //indicatorView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor, constant: 0.0),
-      //indicatorView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor, constant: 0.0)
-    ]
-    
     NSLayoutConstraint.activate(
-      tableViewConstraints +
-      indicatorViewConstraints
+      tableViewConstraints
     )
   }
   
