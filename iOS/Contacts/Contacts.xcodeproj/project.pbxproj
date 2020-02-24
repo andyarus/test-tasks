@@ -226,7 +226,6 @@
 		9243E8C523FB1BE0007A3DE9 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				9243E8CC23FB1C59007A3DE9 /* DataSources */,
 				9243E8CB23FB1C57007A3DE9 /* ViewModels */,
 				9243E8CA23FB1C54007A3DE9 /* Views */,
 			);
@@ -236,7 +235,6 @@
 		9243E8C623FB1BE3007A3DE9 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				9243E8C923FB1BFB007A3DE9 /* DataSources */,
 				9243E8C823FB1BF9007A3DE9 /* ViewModels */,
 				9243E8C723FB1BF7007A3DE9 /* Views */,
 				9243953B23FDB8CF00173997 /* ContactsEndpoints.swift */,
@@ -262,13 +260,6 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		9243E8C923FB1BFB007A3DE9 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
 		9243E8CA23FB1C54007A3DE9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,13 +273,6 @@
 			children = (
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		9243E8CC23FB1C59007A3DE9 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DataSources;
 			sourceTree = "<group>";
 		};
 		924A700824012AE4007F40DD /* Models */ = {

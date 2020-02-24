@@ -18,16 +18,17 @@ class ProfileViewController: UIViewController {
   
   private let nameLabel: UILabel = {
     let label = UILabel()
-    label.backgroundColor = .orange
     label.textAlignment = .center
+    label.font = UIFont.systemFont(ofSize: 26.0)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   
   private let educationPeriodLabel: UILabel = {
     let label = UILabel()
-    label.backgroundColor = .green
     label.textAlignment = .center
+    label.textColor = .lightGray
+    label.font = UIFont.systemFont(ofSize: 17.0)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
@@ -35,24 +36,43 @@ class ProfileViewController: UIViewController {
   private let temperamentLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
+    label.textColor = .lightGray
+    label.font = UIFont.systemFont(ofSize: 15.0)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   
+  private let phoneButtonTopView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .lightGray
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+  
   private let phoneButton: UIButton = {
-    let button = UIButton()
-    button.setTitleColor(.blue, for: .normal)
+    let button = UIButton(type: .system)
+    let image = UIImage(named: "phone")?.withRenderingMode(.alwaysTemplate)
+    button.setImage(image, for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
   
-  private let biographyLabel: UILabel = {
-    let label = UILabel()
-    label.numberOfLines = 0
-    label.backgroundColor = .red
-    label.textAlignment = .center
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
+  private let phoneButtonBottomView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .lightGray
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+  
+  private let biographyTextView: UITextView = {
+    let textView = UITextView()
+    textView.textColor = .lightGray
+    textView.textAlignment = .center
+    textView.isEditable = false
+    textView.isSelectable = true
+    textView.font = UIFont.systemFont(ofSize: 16.0)
+    textView.translatesAutoresizingMaskIntoConstraints = false
+    return textView
   }()
   
   // MARK: - Convenience Init
@@ -86,8 +106,10 @@ class ProfileViewController: UIViewController {
     view.addSubview(nameLabel)
     view.addSubview(educationPeriodLabel)
     view.addSubview(temperamentLabel)
+    view.addSubview(phoneButtonTopView)
     view.addSubview(phoneButton)
-    view.addSubview(biographyLabel)
+    view.addSubview(phoneButtonBottomView)
+    view.addSubview(biographyTextView)
   }
   
   private func setupUI() {
@@ -108,45 +130,57 @@ class ProfileViewController: UIViewController {
     temperamentLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
     
     let nameLabelConstraints = [
-      view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: nameLabel.topAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 0.0),
-      nameLabel.bottomAnchor.constraint(equalTo: educationPeriodLabel.topAnchor, constant: 0.0)
+      view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -35.0),
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: -20.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 20.0),
+      nameLabel.bottomAnchor.constraint(equalTo: educationPeriodLabel.topAnchor, constant: -5.0)
     ]
     
     let educationPeriodLabelConstraints = [
-      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: educationPeriodLabel.leadingAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: educationPeriodLabel.trailingAnchor, constant: 0.0),
-      educationPeriodLabel.bottomAnchor.constraint(equalTo: temperamentLabel.topAnchor, constant: 0.0)
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: educationPeriodLabel.leadingAnchor, constant: -20.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: educationPeriodLabel.trailingAnchor, constant: 20.0),
+      educationPeriodLabel.bottomAnchor.constraint(equalTo: temperamentLabel.topAnchor, constant: -5.0)
     ]
 
     let temperamentLabelConstraints = [
-      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: temperamentLabel.leadingAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: temperamentLabel.trailingAnchor, constant: 0.0),
-      temperamentLabel.bottomAnchor.constraint(equalTo: phoneButton.topAnchor, constant: 0.0)
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: temperamentLabel.leadingAnchor, constant: -20.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: temperamentLabel.trailingAnchor, constant: 20.0),
+      temperamentLabel.bottomAnchor.constraint(equalTo: phoneButton.topAnchor, constant: -30.0)
     ]
-
+    
+    let phoneButtonTopViewConstraints = [
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: phoneButtonTopView.leadingAnchor, constant: -20.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: phoneButtonTopView.trailingAnchor, constant: 20.0),
+      phoneButton.topAnchor.constraint(equalTo: phoneButtonTopView.topAnchor, constant: 0.0),
+      phoneButtonTopView.heightAnchor.constraint(equalToConstant: 1.0)
+    ]
     let phoneButtonConstraints = [
-      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: phoneButton.leadingAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: phoneButton.trailingAnchor, constant: 0.0),
-      phoneButton.bottomAnchor.constraint(equalTo: biographyLabel.topAnchor, constant: 0.0),
-      phoneButton.heightAnchor.constraint(equalToConstant: 40.0)
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: phoneButton.leadingAnchor, constant: -20.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: phoneButton.trailingAnchor, constant: 20.0),
+      phoneButton.bottomAnchor.constraint(equalTo: biographyTextView.topAnchor, constant: -20.0),
+      phoneButton.heightAnchor.constraint(equalToConstant: 50.0)
+    ]
+    let phoneButtonBottomViewConstraints = [
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: phoneButtonBottomView.leadingAnchor, constant: -20.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: phoneButtonBottomView.trailingAnchor, constant: 20.0),
+      phoneButton.bottomAnchor.constraint(equalTo: phoneButtonBottomView.bottomAnchor, constant: 0.0),
+      phoneButtonBottomView.heightAnchor.constraint(equalToConstant: 1.0)
     ]
 
-    let biographyLabelConstraints = [
-      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: biographyLabel.leadingAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: biographyLabel.trailingAnchor, constant: 0.0),
-      
-      //view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: biographyLabel.bottomAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.bottomAnchor.constraint(greaterThanOrEqualTo: biographyLabel.bottomAnchor, constant: 0.0)
+    let biographyTextViewConstraints = [
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: biographyTextView.leadingAnchor, constant: -20.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: biographyTextView.trailingAnchor, constant: 20.0),
+      view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: biographyTextView.bottomAnchor, constant: 20.0),
     ]
     
     NSLayoutConstraint.activate(
       nameLabelConstraints +
       educationPeriodLabelConstraints +
       temperamentLabelConstraints +
+      phoneButtonTopViewConstraints +
       phoneButtonConstraints +
-      biographyLabelConstraints
+      phoneButtonBottomViewConstraints +
+      biographyTextViewConstraints
     )
   }
   
@@ -155,7 +189,7 @@ class ProfileViewController: UIViewController {
     educationPeriodLabel.text = contact.educationPeriod?.toString()
     temperamentLabel.text = contact.temperament.value()
     phoneButton.setTitle(contact.phone, for: .normal)
-    biographyLabel.text = contact.biography
+    biographyTextView.text = contact.biography
   }
 
 }

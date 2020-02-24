@@ -51,6 +51,7 @@ class ContactsViewModel {
   
   public func loadData() {
     //workQueue.async { [unowned self] in
+    //DispatchQueue.main.async {
     //DispatchQueue.global(qos: .background).async { [unowned self] in
       print("load data thread:\(Thread.current)")
       self.getContacts()
@@ -60,20 +61,20 @@ class ContactsViewModel {
   public func getContacts() {
     self._contacts.removeAll()
     /// Load data from local storage
-    if useLocalStorage() {
-      self._contacts = self.databaseService.read()
-      print("realmContacts.count:\(self._contacts.count)")
-      print(self._contacts[0])
-      print(self._contacts[0].temperament)
-      
-//      DispatchQueue.main.async {
-//        self.contacts.onNext(self._contacts)
-//      }
-      
-      self.contacts.onNext(self._contacts)
-      
-      return
-    }
+//    if useLocalStorage() {
+//      self._contacts = self.databaseService.read()
+//      print("realmContacts.count:\(self._contacts.count)")
+//      print(self._contacts[0])
+//      print(self._contacts[0].temperament)
+//
+////      DispatchQueue.main.async {
+////        self.contacts.onNext(self._contacts)
+////      }
+//
+//      self.contacts.onNext(self._contacts)
+//
+//      return
+//    }
     
     /// Load data from network
     self.getMergedPages(forMax: 3)
@@ -110,9 +111,9 @@ class ContactsViewModel {
         
         
 
-        DispatchQueue.main.async {
-          self.databaseService.update(with: self._contacts)
-        }
+//        DispatchQueue.main.async {
+//          self.databaseService.update(with: self._contacts)
+//        }
         
         
         
@@ -185,8 +186,10 @@ class ContactsViewModel {
 //  }
   
   public func loadData(with filter: String) {
-    let matchingСontacts = _contacts.filter { $0.name.hasPrefix(filter) }
-    contacts.onNext(matchingСontacts)
+    //DispatchQueue.main.async { [unowned self] in
+      let matchingСontacts = self._contacts.filter { $0.name.hasPrefix(filter) }
+      self.contacts.onNext(matchingСontacts)
+    //}
   }
   
 //  public func getContacts(with filter: String) -> Observable<[Contact]> {
