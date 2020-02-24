@@ -10,6 +10,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+import Moya
+
 class ContactsViewController: UIViewController {
   
   // MARK: - Public Properties
@@ -42,13 +44,15 @@ class ContactsViewController: UIViewController {
     setupConstraints()
     
     bindViewModel()
-    loadData()
+    //loadData()
   }
   
   private func loadData() {
     indicatorView.startAnimating()
     viewModel.loadData()
   }
+  
+  private let provider = MoyaProvider<Contacts>()
   
   private func bindViewModel() {
     searchController.searchBar.rx.text.orEmpty
@@ -59,23 +63,55 @@ class ContactsViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+//    tableView.refreshControl?.rx.controlEvent(.valueChanged)
+//      .map { self.tableView.refreshControl?.isRefreshing }
+//      .filter { $0 == true }
+//      .subscribe(onNext: { _ in
+//        self.errorView.hide()
+//        self.viewModel.loadData()
+//      }).disposed(by: disposeBag)
+    
+    
     tableView.refreshControl?.rx.controlEvent(.valueChanged)
       .map { self.tableView.refreshControl?.isRefreshing }
       .filter { $0 == true }
-      .subscribe(onNext: { _ in
-        self.errorView.hide()
-        self.viewModel.loadData()
-      }).disposed(by: disposeBag)
-    
-    viewModel.contacts
-      .observeOn(MainScheduler.instance)
-      .do(onNext: { [unowned self] _ in
-        self.endRefreshing()
-      })
+      .flatMap { _ -> Observable<[Contact]> in
+      //.flatMap { _ -> Observable<[Contact]> in
+        return self.provider.rx.request(.contacts(page: 1))
+          .filterSuccessfulStatusCodes()
+          .map([Contact].self)
+          .asObservable()
+      }
       .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
                                    cellType: ContactTableViewCell.self)) { (row, element, cell) in
         cell.configure(for: element)
       }.disposed(by: disposeBag)
+    
+    
+//    viewModel.contactsObservable!
+//      .observeOn(MainScheduler.instance)
+//      .do(onNext: { [unowned self] c in
+//        print()
+//        print("onNext contactsObservable :\(c.count)")
+//        self.endRefreshing()
+//      })
+//      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
+//                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
+//        cell.configure(for: element)
+//      }.disposed(by: disposeBag)
+    
+    
+    
+    
+//    viewModel.contacts
+//      .observeOn(MainScheduler.instance)
+//      .do(onNext: { [unowned self] _ in
+//        self.endRefreshing()
+//      })
+//      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
+//                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
+//        cell.configure(for: element)
+//      }.disposed(by: disposeBag)
     
     viewModel.error
       .observeOn(MainScheduler.instance)

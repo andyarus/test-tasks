@@ -45,6 +45,15 @@ class ContactsViewModel {
   public let contacts = PublishSubject<[Contact]>()
   public let error = PublishSubject<Error>()
   
+  public var contactsObservable: Observable<[Contact]>?
+  
+  init() {
+    contactsObservable = provider.rx.request(.contacts(page: 1))
+      .filterSuccessfulStatusCodes()
+      .map([Contact].self)
+      .asObservable()
+  }
+  
   // MARK: Public Methods
   
   var testCounter: Int = 0
@@ -54,8 +63,28 @@ class ContactsViewModel {
     //DispatchQueue.main.async {
     //DispatchQueue.global(qos: .background).async { [unowned self] in
       print("load data thread:\(Thread.current)")
-      self.getContacts()
+      //self.getContacts()
     //}
+    
+    
+    //let friends: Observable<[User]>
+    //init() {
+//    let client = APIClient()
+//    friends = Observable<[User]>.create({ subscriber in
+//      client.getFacebookFriends(completion: { friends in
+//        subscriber.onNext(friends)
+//        subscriber.onCompleted()
+//      })
+//      return Disposables.create()
+//    })
+    //}
+    
+//    contactsObservable = provider.rx.request(.contacts(page: 1))
+//      .filterSuccessfulStatusCodes()
+//      .map([Contact].self)
+//      .asObservable()
+    
+    
   }
   
   public func getContacts() {
