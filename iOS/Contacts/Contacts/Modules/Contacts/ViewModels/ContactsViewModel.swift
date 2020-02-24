@@ -13,66 +13,116 @@ class ContactsViewModel {
   
   // MARK: Private Properties
   
-  private var disposeBag = DisposeBag()
-  private let provider = MoyaProvider<Contacts>()
-  //let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
+  private let disposeBag = DisposeBag()
+  private let provider = MoyaProvider<Contacts>() //(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
   private let databaseService = DatabaseService()
+  private var _contacts = [Contact]()
+  
+  private let lastUpdateTimeKey = "lastUpdateTime"
+  private let lastUpdateTimeLimit = 1.0 // Seconds
+  private var lastUpdateTime: TimeInterval {
+    get {
+      let defaults = UserDefaults.standard
+      return defaults.double(forKey: lastUpdateTimeKey)
+    }
+    set {
+      let defaults = UserDefaults.standard
+      defaults.setValue(newValue, forKey: lastUpdateTimeKey)
+      defaults.synchronize()
+    }
+  }
+  
+  //private let backgroundQueue = DispatchQueue(label: "background-queue", qos: .background)
+  
+  //let workQueue = DispatchQueue(label: "work-queue", qos: .background)
+  //let workQueue = DispatchQueue(label: "work-queue", qos: .background)
+  //let workQueue = DispatchQueue(label: "work-queue", qos: .background, attributes: .concurrent)
   
   // MARK: Public Properties
   
-  public var contacts = [Contact]()
-  public let contactsSubject = PublishSubject<[Contact]>()
+  //public let contacts = BehaviorRelay<[Contact]>(value: [])
+  //public let contactsTest = PublishSubject<Result<[Contact], Error>>()
+  public let contacts = PublishSubject<[Contact]>()
+  public let error = PublishSubject<Error>()
   
   // MARK: Public Methods
   
+  var testCounter: Int = 0
+  
   public func loadData() {
-    getContacts()
+    //workQueue.async { [unowned self] in
+    DispatchQueue.global(qos: .background).async { [unowned self] in
+      print("load data thread:\(Thread.current)")
+      self.getContacts()
+    }
   }
   
   public func getContacts() {
-    self.contacts.removeAll()
+    self._contacts.removeAll()
+    /// Load data from local storage
+    if useLocalStorage() {
+      self._contacts = self.databaseService.read()
+      print("realmContacts.count:\(self._contacts.count)")
+      print(self._contacts[0])
+      print(self._contacts[0].temperament)
+      
+//      DispatchQueue.main.async {
+//        self.contacts.onNext(self._contacts)
+//      }
+      
+      self.contacts.onNext(self._contacts)
+      
+      return
+    }
+    
+    /// Load data from network
     self.getMergedPages(forMax: 3)
       .subscribe(onNext: { contacts in
-        print("contacts.count:\(contacts.count)")
-        self.contacts.append(contentsOf: contacts)
-        
-        //observer.on(.next(contacts))
+        print("onNext contacts.count:\(contacts.count) thread:\(Thread.current)")
+        self._contacts.append(contentsOf: contacts)
       }, onError: { error in
         print("Error", error)
         //observer.on(.error(error))
+        //self.contacts.onError(error)
+        self.error.onNext(error)
+        //self.contactsTest.onNext(.failure(error))
       }, onCompleted: {
-        print("Completed")
-        print("contacts:\(self.contacts.count) \(self.contacts[0])")
-        
-        print("self.contacts[0].temperament:\(self.contacts[1].temperament)")
+        print("Completed on thread:\(Thread.current)")
+        print("contacts:\(self._contacts.count)")
 
-        //observer.on(.next(self.contacts))
-        self.contactsSubject.onNext(self.contacts)
-        //observer.on(.completed)
+        if self.testCounter > 0 && self.testCounter % 2 == 0 {
+          print("onError")
+          let error = NSError(domain: "tmp error", code: 0, userInfo: nil)
+          //self.contacts.onError(error)
+          self.error.onNext(error)
+          //self.contactsTest.onNext(.failure(error))
+          
+          //self.contacts.onNext(self._contacts)
+        } else {
+          print("onNext")
+          self.contacts.onNext(self._contacts)
+          //self.contactsTest.onNext(.success(self._contacts))
+        }
+        self.testCounter += 1
         
         
-//        do {
-//
-//        let realm = try Realm()
-//        print(realm.configuration.fileURL?.absoluteString ?? "")
-        
-        let contacts = self.databaseService.read()
-        print("realmContacts:\(contacts.count)")
+        print("wtf thread:\(Thread.current)")
         
         
-        
-        let startTime = DispatchTime.now()
-        
-        self.databaseService.update(with: self.contacts)
-        
-        let endTime = DispatchTime.now()
-        let diffTimeNs = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-        let diffTimeS = Double(diffTimeNs) / 1_000_000_000
 
-        print("diffTime:\(diffTimeS) s diffTime:\(diffTimeNs) ns")
+          
         
-      }, onDisposed: {
-        print("Disposed")
+        self.databaseService.update(with: self._contacts, qos: .background)
+        //self.databaseService.update(with: self._contacts, in: self.backgroundQueue)
+        self.lastUpdateTime = Date().timeIntervalSince1970
+        
+        
+        
+
+
+        
+        
+        
       }).disposed(by: self.disposeBag)
   }
   
@@ -131,8 +181,8 @@ class ContactsViewModel {
 //  }
   
   public func loadData(with filter: String) {
-    let matchingСontacts = contacts.filter { $0.name.hasPrefix(filter) }
-    contactsSubject.onNext(matchingСontacts)
+    let matchingСontacts = _contacts.filter { $0.name.hasPrefix(filter) }
+    contacts.onNext(matchingСontacts)
   }
   
 //  public func getContacts(with filter: String) -> Observable<[Contact]> {
@@ -142,20 +192,44 @@ class ContactsViewModel {
   
   // MARK: Private Methods
   
-  private func getMergedPages(forMax max: Int) -> Observable<[Contact]> {
+  public func getMergedPages(forMax max: Int) -> Observable<[Contact]> {
     var pagesObservable = [Observable<[Contact]>]()
     for i in 1...max {
       pagesObservable.append(getNext(for: i))
-    }    
+    }
+    
+//    for i in 1...50 {
+//      var page = i % 3
+//      if page == 0 {
+//        page = 1
+//      }
+//      pagesObservable.append(getNext(for: page))
+//    }
+    
     let pagesSequence = Observable.from(pagesObservable)
     return pagesSequence.merge()
   }
   
   private func getNext(for page: Int) -> Observable<[Contact]> {
-    return provider.rx.request(.contacts(page: 1))
+    return provider.rx.request(.contacts(page: page))
       .filterSuccessfulStatusCodes()
       .map([Contact].self)
       .asObservable()
+  }
+  
+}
+
+// MARK: - Helpers
+
+extension ContactsViewModel {
+  
+  private func useLocalStorage() -> Bool {
+    let currentTime = Date().timeIntervalSince1970
+    let leftTime = currentTime - self.lastUpdateTime
+    if leftTime < lastUpdateTimeLimit {
+      return true
+    }
+    return false
   }
   
 }

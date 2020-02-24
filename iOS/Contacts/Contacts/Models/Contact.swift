@@ -37,6 +37,24 @@ class Contact: Object, Decodable {
     case educationPeriod
   }
   
+  convenience init(id: String,
+       name: String,
+       phone: String,
+       height: Double,
+       biography: String,
+       temperament: Temperament,
+       educationPeriod: EducationPeriod?) {
+    self.init()
+    
+    self.id = id
+    self.name = name
+    self.phone = phone
+    self.height = height
+    self.biography = biography
+    self.temperament = temperament
+    self.educationPeriod = educationPeriod
+  }
+  
   required convenience init(from decoder: Decoder) throws {
     self.init()
     
@@ -52,26 +70,4 @@ class Contact: Object, Decodable {
     educationPeriod = try container.decode(EducationPeriod.self, forKey: .educationPeriod)
   }
 
-//  required init() {
-//    super.init()
-//  }
-
-//  required init(value: Any, schema: RLMSchema) {
-//    super.init(value: value, schema: schema)
-//  }
-//
-//  required init(realm: RLMRealm, schema: RLMObjectSchema) {
-//    super.init(realm: realm, schema: schema)
-//  }
-
 }
-
-//struct Contact: Decodable {
-//  let id: String
-//  let name: String
-//  let phone: String
-//  let height: Double
-//  let biography: String
-//  let temperament: Temperament
-//  let educationPeriod: EducationPeriod
-//}

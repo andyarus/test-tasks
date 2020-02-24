@@ -23,6 +23,8 @@ class ContactsViewController: UIViewController {
   // MARK: - Private View Properties
   
   private let tableView = UITableView()
+  private let indicatorView = UIActivityIndicatorView()
+  private lazy var errorView = ErrorView(parent: view)
   
   // MARK: - Lifecycle
   
@@ -36,47 +38,65 @@ class ContactsViewController: UIViewController {
     //bindViewModel()
     addSubviews()
     setupUI()
+    setupConstraints()
     
     bindViewModel()
     loadData()
   }
   
   private func loadData() {
+    indicatorView.startAnimating()
     viewModel.loadData()
   }
   
   private func bindViewModel() {
-//    viewModel.getContacts()
-//      .subscribe(onSuccess: { [unowned self] contacts in
-//        //self.tableView.reloadData()
-//      }, onError: { error in
-//        print("Error getting contacts", error)
-//      }).disposed(by: disposeBag)
+    tableView.refreshControl?.rx.controlEvent(.valueChanged)
+      .map { self.tableView.refreshControl?.isRefreshing }
+      .filter { $0 == true }
+      .subscribe(onNext: { _ in
+        self.errorView.hide()
+        self.viewModel.loadData()
+      }).disposed(by: disposeBag)
     
-    /// Temporarily
-//    tableView.delegate = nil
-//    tableView.dataSource = nil
-    
-    viewModel.contactsSubject
+    viewModel.contacts
+      .observeOn(MainScheduler.instance)
+      .do(onNext: { [unowned self] _ in
+        self.endRefreshing()
+      })
       .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
                                    cellType: ContactTableViewCell.self)) { (row, element, cell) in
         cell.configure(for: element)
       }.disposed(by: disposeBag)
+    
+    viewModel.error
+      .observeOn(MainScheduler.instance)
+      .subscribe(onNext: { [unowned self] error in
+        self.errorView.show()
+        self.endRefreshing()
+      }).disposed(by: disposeBag)
+  }
+  
+  private func endRefreshing() {
+    indicatorView.stopAnimating()
+    tableView.refreshControl?.endRefreshing()
   }
   
   private func addSubviews() {
     view.addSubview(tableView)
+    view.addSubview(indicatorView)
   }
   
   private func setupUI() {
+    view.backgroundColor = .white
+    navigationItem.title = "Contacts"
+    
     setupSearchController()
     setupTableView()
-    setupConstraints()
+    setupIndicatorView()
   }
   
   private func setupSearchController() {
     let searchController = UISearchController(searchResultsController: nil)
-    //searchController.searchResultsUpdater = self
     searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search"
     navigationItem.searchController = searchController
@@ -116,23 +136,43 @@ class ContactsViewController: UIViewController {
   }
   
   private func setupTableView() {
-    //tableView.delegate = self
-    //tableView.dataSource = self
     let nibName = String(describing: ContactTableViewCell.self)
     tableView.register(UINib(nibName: nibName, bundle: nil), forCellReuseIdentifier: ContactTableViewCell.reuseIdentifier)
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.refreshControl = UIRefreshControl()
+    tableView.refreshControl?.tintColor = .orange
+    tableView.separatorInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 0)
   }
+  
+  private func setupIndicatorView() {
+    indicatorView.style = .whiteLarge
+    indicatorView.color = .orange
+    indicatorView.center = view.center
+    indicatorView.hidesWhenStopped = true
+  }
+  
+//  @objc
+//  func refreshWeatherData(_ sender: Any) {
+//    print("refreshWeatherData")
+//    //viewModel.loadData()
+//  }
   
   private func setupConstraints() {
     let tableViewConstraints: [NSLayoutConstraint] = [
       view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0.0)
+      view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 20.0)
+    ]
+    
+    let indicatorViewConstraints: [NSLayoutConstraint] = [
+      //indicatorView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor, constant: 0.0),
+      //indicatorView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor, constant: 0.0)
     ]
     
     NSLayoutConstraint.activate(
-      tableViewConstraints
+      tableViewConstraints +
+      indicatorViewConstraints
     )
   }
   

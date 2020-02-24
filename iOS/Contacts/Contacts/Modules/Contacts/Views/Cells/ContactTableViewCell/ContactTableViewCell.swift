@@ -30,17 +30,8 @@ class ContactTableViewCell: UITableViewCell {
   
   public func configure(for contact: Contact) {
     nameLabel.text = contact.name
-    phoneLabel.text = contact.phone
-    temperamentLabel.text = contact.temperament.rawValue
+    phoneLabel.text = contact.phone.formatPhone()
+    temperamentLabel.text = contact.temperament.value()
   }
-  
-//    override func awakeFromNib() {
-//      super.awakeFromNib()
-//      // Initialization code
-//    }
-//
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//      super.setSelected(selected, animated: animated)
-//    }
     
 }
