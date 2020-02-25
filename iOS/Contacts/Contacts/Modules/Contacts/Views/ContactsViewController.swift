@@ -24,10 +24,20 @@ class ContactsViewController: UIViewController {
   
   // MARK: - Private View Properties
   
+  private let contactsLabel: UILabel = {
+    let label = UILabel()
+    label.text = "Contacts"
+    label.textAlignment = .left
+    label.font = UIFont.systemFont(ofSize: 32.0, weight: .bold)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
+  
   private var searchController: UISearchController!
   private let tableView = UITableView()
   private let indicatorView = UIActivityIndicatorView()
   private lazy var errorView = ErrorView(parent: view)
+  private lazy var searchView = SearchView(parent: view)
   
   // MARK: - Lifecycle
   
@@ -56,6 +66,7 @@ class ContactsViewController: UIViewController {
   
   private func bindViewModel() {
     searchController.searchBar.rx.text.orEmpty
+    //searchView.searchBar.rx.text.orEmpty
       .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
       .distinctUntilChanged()
       .subscribe(onNext: { [unowned self] filter in
@@ -63,29 +74,36 @@ class ContactsViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-//    tableView.refreshControl?.rx.controlEvent(.valueChanged)
-//      .map { self.tableView.refreshControl?.isRefreshing }
-//      .filter { $0 == true }
-//      .subscribe(onNext: { _ in
-//        self.errorView.hide()
-//        self.viewModel.loadData()
-//      }).disposed(by: disposeBag)
-    
+//    searchController.searchBar.rx.text.orEmpty
+//      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+//      .distinctUntilChanged()
+//      .subscribe(onNext: { [unowned self] filter in
+//        self.viewModel.loadData(with: filter)
+//      })
+//      .disposed(by: disposeBag)
     
     tableView.refreshControl?.rx.controlEvent(.valueChanged)
       .map { self.tableView.refreshControl?.isRefreshing }
       .filter { $0 == true }
-      .flatMap { _ -> Observable<[Contact]> in
-      //.flatMap { _ -> Observable<[Contact]> in
-        return self.provider.rx.request(.contacts(page: 1))
-          .filterSuccessfulStatusCodes()
-          .map([Contact].self)
-          .asObservable()
-      }
-      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
-                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
-        cell.configure(for: element)
-      }.disposed(by: disposeBag)
+      .subscribe(onNext: { _ in
+        self.errorView.hide()
+        self.viewModel.loadData()
+      }).disposed(by: disposeBag)
+    
+    
+//    tableView.refreshControl?.rx.controlEvent(.valueChanged)
+//      .map { self.tableView.refreshControl?.isRefreshing }
+//      .filter { $0 == true }
+//      .flatMap { _ -> Observable<[Contact]> in
+//        return self.provider.rx.request(.contacts(page: 1))
+//          .filterSuccessfulStatusCodes()
+//          .map([Contact].self)
+//          .asObservable()
+//      }
+//      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
+//                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
+//        cell.configure(for: element)
+//      }.disposed(by: disposeBag)
     
     
 //    viewModel.contactsObservable!
@@ -103,15 +121,15 @@ class ContactsViewController: UIViewController {
     
     
     
-//    viewModel.contacts
-//      .observeOn(MainScheduler.instance)
-//      .do(onNext: { [unowned self] _ in
-//        self.endRefreshing()
-//      })
-//      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
-//                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
-//        cell.configure(for: element)
-//      }.disposed(by: disposeBag)
+    viewModel.contacts
+      .observeOn(MainScheduler.instance)
+      .do(onNext: { [unowned self] _ in
+        self.endRefreshing()
+      })
+      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
+                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
+        cell.configure(for: element)
+      }.disposed(by: disposeBag)
     
     viewModel.error
       .observeOn(MainScheduler.instance)
@@ -148,13 +166,20 @@ class ContactsViewController: UIViewController {
   }
   
   private func addSubviews() {
+    view.addSubview(contactsLabel)
     view.addSubview(tableView)
     view.addSubview(indicatorView)
   }
   
   private func setupUI() {
     view.backgroundColor = .white
+    
     navigationItem.title = "Contacts"
+    navigationController?.navigationBar.prefersLargeTitles = true
+    
+    /// Hide navigation bar bottom border
+    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    navigationController?.navigationBar.shadowImage = UIImage()
     
     setupSearchController()
     setupTableView()
@@ -163,9 +188,21 @@ class ContactsViewController: UIViewController {
   
   private func setupSearchController() {
     searchController = UISearchController(searchResultsController: nil)
-    searchController.obscuresBackgroundDuringPresentation = false
+    //searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search"
-    navigationItem.searchController = searchController
+    
+    searchController.dimsBackgroundDuringPresentation = false
+    
+    /// Hack for hiding standard borders
+    searchController.searchBar.backgroundImage = UIImage()
+    /// Hack for adding bottom border
+    let bottomBorder = UIView(frame: CGRect(x: 0,
+                                      y: searchController.searchBar.frame.size.height - 1,
+                                      width: searchController.searchBar.frame.size.width,
+                                      height: 1.0))
+    bottomBorder.backgroundColor = .lightGray
+    searchController.searchBar.addSubview(bottomBorder)
+    
     
 //    searchController.searchBar.rx.text.orEmpty
 //      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
@@ -205,9 +242,13 @@ class ContactsViewController: UIViewController {
     let nibName = String(describing: ContactTableViewCell.self)
     tableView.register(UINib(nibName: nibName, bundle: nil), forCellReuseIdentifier: ContactTableViewCell.reuseIdentifier)
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.separatorInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 0)
+    
     tableView.refreshControl = UIRefreshControl()
     tableView.refreshControl?.tintColor = .orange
-    tableView.separatorInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 0)
+    tableView.refreshControl?.backgroundColor = view.backgroundColor
+    
+    tableView.tableHeaderView = searchController.searchBar
   }
   
   private func setupIndicatorView() {
@@ -218,14 +259,24 @@ class ContactsViewController: UIViewController {
   }
   
   private func setupConstraints() {
+    
+    let contactsLabelConstraints: [NSLayoutConstraint] = [
+      contactsLabel.heightAnchor.constraint(equalToConstant: 40),
+      view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contactsLabel.topAnchor, constant: 0.0),
+      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: contactsLabel.leadingAnchor, constant: -10.0),
+      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: contactsLabel.trailingAnchor, constant: 10.0),
+    ]
+    
     let tableViewConstraints: [NSLayoutConstraint] = [
-      view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
+      contactsLabel.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
+      //view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 20.0)
     ]
     
     NSLayoutConstraint.activate(
+      contactsLabelConstraints +
       tableViewConstraints
     )
   }

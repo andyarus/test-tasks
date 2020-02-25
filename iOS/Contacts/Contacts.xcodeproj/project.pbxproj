@@ -13,6 +13,7 @@
 		923C9B1E24045189000D3AB5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B1D24045189000D3AB5 /* Utils.swift */; };
 		923C9B202404522B000D3AB5 /* String+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B1F2404522B000D3AB5 /* String+Date.swift */; };
 		923C9B2224045283000D3AB5 /* EducationPeriod+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B2124045283000D3AB5 /* EducationPeriod+String.swift */; };
+		9243706D2405B32E005915B3 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243706C2405B32E005915B3 /* SearchView.swift */; };
 		9243953C23FDB8CF00173997 /* ContactsEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243953B23FDB8CF00173997 /* ContactsEndpoints.swift */; };
 		9243E89223FB183A007A3DE9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243E89123FB183A007A3DE9 /* AppDelegate.swift */; };
 		9243E89B23FB183B007A3DE9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9243E89A23FB183B007A3DE9 /* Assets.xcassets */; };
@@ -63,6 +64,7 @@
 		923C9B1D24045189000D3AB5 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		923C9B1F2404522B000D3AB5 /* String+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Date.swift"; sourceTree = "<group>"; };
 		923C9B2124045283000D3AB5 /* EducationPeriod+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EducationPeriod+String.swift"; sourceTree = "<group>"; };
+		9243706C2405B32E005915B3 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		9243953B23FDB8CF00173997 /* ContactsEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsEndpoints.swift; sourceTree = "<group>"; };
 		9243E88E23FB183A007A3DE9 /* Contacts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Contacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9243E89123FB183A007A3DE9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +143,14 @@
 				923C9B1D24045189000D3AB5 /* Utils.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		9243706B2405B2D4005915B3 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				9243706C2405B32E005915B3 /* SearchView.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		9243E88523FB183A007A3DE9 = {
@@ -245,6 +255,7 @@
 		9243E8C723FB1BF7007A3DE9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9243706B2405B2D4005915B3 /* Search */,
 				923C9B1724040359000D3AB5 /* Error */,
 				924A701424016BED007F40DD /* Cells */,
 				9243E8CD23FB1C88007A3DE9 /* ContactsViewController.swift */,
@@ -580,6 +591,7 @@
 				9243953C23FDB8CF00173997 /* ContactsEndpoints.swift in Sources */,
 				924A700C24012B08007F40DD /* Contact.swift in Sources */,
 				923C9B1E24045189000D3AB5 /* Utils.swift in Sources */,
+				9243706D2405B32E005915B3 /* SearchView.swift in Sources */,
 				924A700E24012B8A007F40DD /* EducationPeriod.swift in Sources */,
 				925D742E240301CD00D0438D /* DatabaseService.swift in Sources */,
 				923C9B2224045283000D3AB5 /* EducationPeriod+String.swift in Sources */,

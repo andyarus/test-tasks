@@ -63,7 +63,7 @@ class ContactsViewModel {
     //DispatchQueue.main.async {
     //DispatchQueue.global(qos: .background).async { [unowned self] in
       print("load data thread:\(Thread.current)")
-      //self.getContacts()
+      self.getContacts()
     //}
     
     
