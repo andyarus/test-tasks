@@ -9,7 +9,7 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+  
   // MARK: Public Properties
   
   public var contact: Contact!
@@ -93,7 +93,11 @@ class ProfileViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
+    setupNavigationTitle()
   }
+  
+  // MARK: - Setup Methods
   
   private func setup() {
     addSubviews()
@@ -114,11 +118,9 @@ class ProfileViewController: UIViewController {
   
   private func setupUI() {
     view.backgroundColor = .white
-    
-    setupNavigationBar()
   }
   
-  private func setupNavigationBar() {
+  private func setupNavigationTitle() {
     /// Clear back button text
     navigationController?.navigationBar.topItem?.title = ""
   }

@@ -24,20 +24,10 @@ class ContactsViewController: UIViewController {
   
   // MARK: - Private View Properties
   
-  private let contactsLabel: UILabel = {
-    let label = UILabel()
-    label.text = "Contacts"
-    label.textAlignment = .left
-    label.font = UIFont.systemFont(ofSize: 32.0, weight: .bold)
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-  
   private var searchController: UISearchController!
   private let tableView = UITableView()
   private let indicatorView = UIActivityIndicatorView()
   private lazy var errorView = ErrorView(parent: view)
-  private lazy var searchView = SearchView(parent: view)
   
   // MARK: - Lifecycle
   
@@ -46,6 +36,16 @@ class ContactsViewController: UIViewController {
     
     setup()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    setupNavigationTitle()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    searchController.dismiss(animated: false)
+  }
+  
+  // MARK: - Setup Methods
   
   private func setup() {
     //bindViewModel()
@@ -166,7 +166,6 @@ class ContactsViewController: UIViewController {
   }
   
   private func addSubviews() {
-    view.addSubview(contactsLabel)
     view.addSubview(tableView)
     view.addSubview(indicatorView)
   }
@@ -174,16 +173,24 @@ class ContactsViewController: UIViewController {
   private func setupUI() {
     view.backgroundColor = .white
     
-    navigationItem.title = "Contacts"
+    setupNavigationBar()
+    
+    setupSearchController()
+    setupTableView()
+    setupIndicatorView()
+  }
+  
+  private func setupNavigationBar() {
+    /// Large title
     navigationController?.navigationBar.prefersLargeTitles = true
     
     /// Hide navigation bar bottom border
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     navigationController?.navigationBar.shadowImage = UIImage()
-    
-    setupSearchController()
-    setupTableView()
-    setupIndicatorView()
+  }
+  
+  private func setupNavigationTitle() {
+    navigationItem.title = "Contacts"
   }
   
   private func setupSearchController() {
@@ -260,23 +267,14 @@ class ContactsViewController: UIViewController {
   
   private func setupConstraints() {
     
-    let contactsLabelConstraints: [NSLayoutConstraint] = [
-      contactsLabel.heightAnchor.constraint(equalToConstant: 40),
-      view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contactsLabel.topAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: contactsLabel.leadingAnchor, constant: -10.0),
-      view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: contactsLabel.trailingAnchor, constant: 10.0),
-    ]
-    
     let tableViewConstraints: [NSLayoutConstraint] = [
-      contactsLabel.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
-      //view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
+      view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 20.0)
     ]
     
     NSLayoutConstraint.activate(
-      contactsLabelConstraints +
       tableViewConstraints
     )
   }
