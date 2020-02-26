@@ -14,6 +14,10 @@ import Moya
 
 class ContactsViewController: UIViewController {
   
+  // MARK: - Coordinator
+  
+  weak var coordinator: MainCoordinator?
+  
   // MARK: - Public Properties
   
   public var viewModel: ContactsViewModel!
@@ -42,7 +46,7 @@ class ContactsViewController: UIViewController {
   }
   
   override func viewWillDisappear(_ animated: Bool) {
-    searchController.dismiss(animated: false)
+    //searchController.dismiss(animated: false)
   }
   
   // MARK: - Setup Methods
@@ -144,9 +148,10 @@ class ContactsViewController: UIViewController {
         
         DispatchQueue.main.async {
 
-        guard let contact = self.viewModel.contact(at: indexPath.row) else { return }
-        let vc = ProfileViewController(contact: contact)
-        self.navigationController?.pushViewController(vc, animated: true)
+          guard let contact = self.viewModel.contact(at: indexPath.row) else { return }
+        //let vc = ProfileViewController(contact: contact)
+        //self.navigationController?.pushViewController(vc, animated: true)
+          self.coordinator?.openProfile(for: contact)
           
         }
         
@@ -182,11 +187,12 @@ class ContactsViewController: UIViewController {
   
   private func setupNavigationBar() {
     /// Large title
+    //navigationController?.navigationItem.largeTitleDisplayMode = .always
     navigationController?.navigationBar.prefersLargeTitles = true
     
     /// Hide navigation bar bottom border
-    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-    navigationController?.navigationBar.shadowImage = UIImage()
+//    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+//    navigationController?.navigationBar.shadowImage = UIImage()
   }
   
   private func setupNavigationTitle() {
@@ -195,20 +201,66 @@ class ContactsViewController: UIViewController {
   
   private func setupSearchController() {
     searchController = UISearchController(searchResultsController: nil)
-    //searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search"
+    navigationItem.searchController = searchController
     
+    definesPresentationContext = true
+    searchController.obscuresBackgroundDuringPresentation = false
     searchController.dimsBackgroundDuringPresentation = false
     
-    /// Hack for hiding standard borders
-    searchController.searchBar.backgroundImage = UIImage()
-    /// Hack for adding bottom border
-    let bottomBorder = UIView(frame: CGRect(x: 0,
-                                      y: searchController.searchBar.frame.size.height - 1,
-                                      width: searchController.searchBar.frame.size.width,
-                                      height: 1.0))
-    bottomBorder.backgroundColor = .lightGray
-    searchController.searchBar.addSubview(bottomBorder)
+//    definesPresentationContext = true
+//    searchController.obscuresBackgroundDuringPresentation = false
+//    searchController.dimsBackgroundDuringPresentation = true
+    
+    
+    //navigationController?.navigationBar.isTranslucent = false
+    //navigationController?.navigationBar.backgroundColor = .white
+    
+    //navigationController?.view.backgroundColor = .red
+    
+    //navigationController?.extendedLayoutIncludesOpaqueBars = true
+    
+    //navigationController?.navigationBar.isTranslucent = false
+    
+    
+    
+    
+//    print("navigationController?.navigationBar.tintColor:\(navigationController?.navigationBar.barTintColor)")
+//    print("navigationController?.navigationBar.barTintColor:\(navigationController?.navigationBar.barTintColor)")
+//    print("navigationController?.navigationBar.backgroundColor:\(navigationController?.navigationBar.backgroundColor)")
+
+
+    //navigationController?.navigationBar.backgroundColor = .blue
+    
+    
+//    let tintColor = navigationController?.navigationBar.barTintColor
+//    navigationController?.navigationBar.barTintColor = tintColor
+//    navigationController?.navigationBar.backgroundColor = tintColor
+    
+    
+    
+    
+    
+//    let bottomBorder = UIView(frame: CGRect(x: 0,
+//                                      y: navigationController!.navigationBar.frame.size.height - 1,
+//                                      width: navigationController!.navigationBar.frame.size.width,
+//                                      height: 1.0))
+//    bottomBorder.backgroundColor = .lightGray
+//    navigationController?.navigationBar.addSubview(bottomBorder)
+    
+    
+    
+    
+    
+//    /// Hack for hiding standard borders
+//    searchController.searchBar.backgroundImage = UIImage()
+//    /// Hack for adding bottom border
+//    let bottomBorder = UIView(frame: CGRect(x: 0,
+//                                      y: searchController.searchBar.frame.size.height - 1,
+//                                      width: searchController.searchBar.frame.size.width,
+//                                      height: 1.0))
+//    bottomBorder.backgroundColor = .lightGray
+//    searchController.searchBar.addSubview(bottomBorder)
     
     
 //    searchController.searchBar.rx.text.orEmpty
@@ -255,7 +307,7 @@ class ContactsViewController: UIViewController {
     tableView.refreshControl?.tintColor = .orange
     tableView.refreshControl?.backgroundColor = view.backgroundColor
     
-    tableView.tableHeaderView = searchController.searchBar
+    //tableView.tableHeaderView = searchController.searchBar
   }
   
   private func setupIndicatorView() {
@@ -271,7 +323,7 @@ class ContactsViewController: UIViewController {
       view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0.0),
-      view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 20.0)
+      view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0.0)
     ]
     
     NSLayoutConstraint.activate(

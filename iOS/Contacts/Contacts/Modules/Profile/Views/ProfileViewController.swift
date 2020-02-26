@@ -10,6 +10,10 @@ import UIKit
 
 class ProfileViewController: UIViewController {
   
+  // MARK: - Coordinator
+  
+  weak var coordinator: MainCoordinator?
+  
   // MARK: Public Properties
   
   public var contact: Contact!
