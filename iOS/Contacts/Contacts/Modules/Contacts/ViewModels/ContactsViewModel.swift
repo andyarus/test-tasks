@@ -14,7 +14,8 @@ class ContactsViewModel {
   // MARK: Private Properties
   
   private let disposeBag = DisposeBag()
-  private let provider = MoyaProvider<Contacts>() //(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
+  //private let provider = MoyaProvider<Contacts>()
+  private let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
   private let databaseService = DatabaseService()
   private var _contacts = [Contact]()
   
@@ -252,6 +253,11 @@ class ContactsViewModel {
   }
   
   private func getNext(for page: Int) -> Observable<[Contact]> {
+    
+    //callbackQueue
+    //Callback queue. If nil - queue from provider initializer will be used.
+    //return provider.rx.request(.contacts(page: page), callbackQueue: DispatchQueue.main)
+    
     return provider.rx.request(.contacts(page: page))
       .filterSuccessfulStatusCodes()
       .map([Contact].self)

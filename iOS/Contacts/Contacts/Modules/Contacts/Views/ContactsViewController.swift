@@ -63,51 +63,111 @@ class ContactsViewController: UIViewController {
   
   private func loadData() {
     indicatorView.startAnimating()
-    viewModel.loadData()
+    //viewModel.loadData()
   }
   
   private let provider = MoyaProvider<Contacts>()
+  //private let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
+  //private let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin()])
   
   private func bindViewModel() {
-    searchController.searchBar.rx.text.orEmpty
-    //searchView.searchBar.rx.text.orEmpty
-      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-      .distinctUntilChanged()
-      .subscribe(onNext: { [unowned self] filter in
-        self.viewModel.loadData(with: filter)
-      })
-      .disposed(by: disposeBag)
     
-//    searchController.searchBar.rx.text.orEmpty
-//      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-//      .distinctUntilChanged()
-//      .subscribe(onNext: { [unowned self] filter in
-//        self.viewModel.loadData(with: filter)
-//      })
-//      .disposed(by: disposeBag)
+    
     
     tableView.refreshControl?.rx.controlEvent(.valueChanged)
       .map { self.tableView.refreshControl?.isRefreshing }
       .filter { $0 == true }
-      .subscribe(onNext: { _ in
-        self.errorView.hide()
-        self.viewModel.loadData()
-      }).disposed(by: disposeBag)
-    
-    
-//    tableView.refreshControl?.rx.controlEvent(.valueChanged)
-//      .map { self.tableView.refreshControl?.isRefreshing }
-//      .filter { $0 == true }
+      
 //      .flatMap { _ -> Observable<[Contact]> in
 //        return self.provider.rx.request(.contacts(page: 1))
 //          .filterSuccessfulStatusCodes()
 //          .map([Contact].self)
 //          .asObservable()
+//          //.retry(3)
 //      }
+      
+      //.observeOn(ConcurrentDispatchQueueScheduler.init(qos: .background))
+      .flatMap { _ -> Observable<[Contact]> in
+        let page1 = self.provider.rx.request(.contacts(page: 1))
+          .filterSuccessfulStatusCodes()
+          .map([Contact].self)
+          .asObservable()
+        let page2 = self.provider.rx.request(.contacts(page: 2))
+          .filterSuccessfulStatusCodes()
+          .map([Contact].self)
+          .asObservable()
+        let page3 = self.provider.rx.request(.contacts(page: 4))
+          .filterSuccessfulStatusCodes()
+          .map([Contact].self)
+          .asObservable()
+          .retry(3)
+          .catchErrorJustReturn([])
+        
+        //return Observable.from([page1, page2, page3]).merge()
+        
+        //return Observable.combineLatest(page1, page2, page3) { return $0 + $1 + $2 }
+          //.observeOn(ConcurrentDispatchQueueScheduler.init(qos: .background))
+ 
+        //return Observable.zip(page1, page2, page3, resultSelector: { $0 + $1 + $2 })
+        //return Observable.zip(page1, page2, page3) { $0 + $1 + $2 }
+        
+        //return Observable.merge([page1, page2, page3])
+        //return Observable.concat([page1, page2, page3])
+        
+        //return page1.amb(page2).amb(page3)
+        
+        return Observable.combineLatest(page1, page2, page3) {
+          print("$0.count", $0.count)
+          print("$1.count", $1.count)
+          print("$2.count", $2.count)
+          
+          return $0 + $1 + $2
+        }
+        
+      }
+      
+//    .flatMap { test -> Observable<[Contact]> in
+//      print("test.count", test.count)
+//      return Observable.just(test)
+//    }
+      
+//      .flatMap { [unowned self] _ in
+//        return self.provider.rx.request(.contacts(page: 6))
+//          .filterSuccessfulStatusCodes()
+//          .map([Contact].self)
+//          .asObservable()
+//          .materialize()
+//
+////        return self.provider.rx.request(.contacts(page: 1))
+////          .filterSuccessfulStatusCodes()
+////          .map([Contact].self)
+////          .asObservable()
+//
+//        }
+      
+        //.observeOn(MainScheduler.instance)
+        //.subscribeOn(MainScheduler.instance)
+        .subscribe(onNext: { event in
+          print("event event.count:", event.count)
+          self.endRefreshing()
+        }, onError: { error in
+          print("error:", error)
+        }, onCompleted: {
+          print("completed")
+        })
+      
+      
+//      .catchError { error in
+//        print("error wtf:\(error)")
+//        return Observable<[Contact]>.empty()
+//      }
+      //.catchErrorJustReturn([])
 //      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
 //                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
 //        cell.configure(for: element)
-//      }.disposed(by: disposeBag)
+//      }
+      
+      .disposed(by: disposeBag)
     
     
 //    viewModel.contactsObservable!
@@ -125,22 +185,47 @@ class ContactsViewController: UIViewController {
     
     
     
-    viewModel.contacts
-      .observeOn(MainScheduler.instance)
-      .do(onNext: { [unowned self] _ in
-        self.endRefreshing()
-      })
-      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
-                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
-        cell.configure(for: element)
-      }.disposed(by: disposeBag)
     
-    viewModel.error
-      .observeOn(MainScheduler.instance)
-      .subscribe(onNext: { [unowned self] error in
-        self.errorView.show()
-        self.endRefreshing()
-      }).disposed(by: disposeBag)
+    
+    
+    searchController.searchBar.rx.text.orEmpty
+      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+      .distinctUntilChanged()
+      .subscribe(onNext: { [unowned self] filter in
+        self.viewModel.loadData(with: filter)
+      })
+      .disposed(by: disposeBag)
+    
+//    tableView.refreshControl?.rx.controlEvent(.valueChanged)
+//      .map { self.tableView.refreshControl?.isRefreshing }
+//      .filter { $0 == true }
+//      .subscribe(onNext: { _ in
+//        self.errorView.hide()
+//        self.viewModel.loadData()
+//      }).disposed(by: disposeBag)
+    
+    
+    
+    
+    
+    
+    
+//    viewModel.contacts
+//      .observeOn(MainScheduler.instance)
+//      .do(onNext: { [unowned self] _ in
+//        self.endRefreshing()
+//      })
+//      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
+//                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
+//        cell.configure(for: element)
+//      }.disposed(by: disposeBag)
+//
+//    viewModel.error
+//      .observeOn(MainScheduler.instance)
+//      .subscribe(onNext: { [unowned self] error in
+//        self.errorView.show()
+//        self.endRefreshing()
+//      }).disposed(by: disposeBag)
     
     tableView.rx.itemSelected
       .observeOn(MainScheduler.instance)
