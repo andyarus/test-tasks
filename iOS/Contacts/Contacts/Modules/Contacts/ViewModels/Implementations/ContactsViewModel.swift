@@ -9,7 +9,7 @@
 import Moya
 import RxSwift
 
-class ContactsViewModel {
+class ContactsViewModel: ContactsViewModelType {
   
   // MARK: Private Properties
   
@@ -19,7 +19,7 @@ class ContactsViewModel {
   private var contactsFilter = ""
   
   private let lastUpdateTimeKey = "lastUpdateTime"
-  private let lastUpdateTimeLimit = 1.0 // Seconds
+  private let lastUpdateTimeLimit = 10.0 // Seconds
   private var lastUpdateTime: TimeInterval {
     get {
       let defaults = UserDefaults.standard
@@ -55,7 +55,7 @@ class ContactsViewModel {
     setupRx()
   }
   
-  // MAKR: - Setup Rx
+  // MARK: - Setup Rx
   
   private func setupRx() {
     /// Input
@@ -72,17 +72,6 @@ class ContactsViewModel {
         guard !self.isContactsLoading else { return }
         self._getContacts(with: filter)
       }).disposed(by: disposeBag)
-    
-    /// Save contacts to Realm
-//    contacts
-//      .subscribeOn(MainScheduler.instance)
-//      .subscribe(onNext: { [unowned self] contacts in
-//        print("ContactsViewModel contacts:", contacts.count)
-//        
-//        self.databaseService.update(with: contacts)
-//        //self.databaseService.update(with: contacts, qos: .background)
-//        
-//      }).disposed(by: disposeBag)
   }
   
   // MARK: Private Methods
@@ -95,13 +84,15 @@ class ContactsViewModel {
     /// Don't start new loading while previous not done yet
     guard !isContactsLoading else { return }
     
-    let test = databaseService.read()
-    print("_contacts realm:", test.count)
-//    self.contacts.onNext(test)
-//    return
+    /// Load contacts from local storage if update time limit not exceeded
+    if useLocalStorage() {
+      let test = databaseService.read()
+      print("_contacts realm:", test.count)
+      self.contacts.onNext(test)
+      return
+    }
     
-    
-    
+    /// Load contacts from network
     
     isContactsLoading = true
     
@@ -124,6 +115,9 @@ class ContactsViewModel {
           }
           
           self.contacts.onNext(self._contacts)
+          
+          /// Save contacts to local storage
+          self.saveContacts(self._contacts)
         case .error(let error):
           print("event error", error)
           self.error.onNext(error)
@@ -155,6 +149,14 @@ class ContactsViewModel {
         networkService.fetchContacts(forSource: 2),
         networkService.fetchContacts(forSource: 3)
       ]
+  }
+  
+  private func saveContacts(_ contacts: [Contact]) {
+    //DispatchQueue.main.async {
+    databaseService.update(with: contacts)
+    //self.databaseService.update(with: contacts, qos: .background)
+    lastUpdateTime = Date().timeIntervalSince1970
+    //}
   }
   
 }

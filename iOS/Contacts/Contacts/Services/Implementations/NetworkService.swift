@@ -9,9 +9,9 @@
 import Moya
 import RxSwift
 
-class NetworkService {
+class NetworkService: NetworkServiceType {
   
-  private let provider: MoyaProvider<Contacts>
+  let provider: MoyaProvider<Contacts>
   
   init(provider: MoyaProvider<Contacts>) {
     self.provider = provider

@@ -9,18 +9,7 @@
 import RealmSwift
 import RxSwift
 
-class DatabaseService {
-  
-  // MARK: Init
-  
-  init() {
-//    do {
-//      realm = try Realm()
-//      print("Realm configuration url:\(realm.configuration.fileURL?.absoluteString ?? "")")
-//    } catch let error as NSError {
-//      print("Error init Realm", error)
-//    }
-  }
+class DatabaseService: DatabaseServiceType {
   
   // MARK: Public Methods
   
@@ -44,16 +33,11 @@ class DatabaseService {
   /// Update in the same thred
   public func update(with contacts: [Contact]) {
     do {
-      print()
-      print("update", Thread.current)
       let realm = try Realm()
       //try realm.write {
-        print("write")
-        realm.beginWrite()
-        realm.add(contacts, update: .modified)
-      print("write1")
-        try realm.commitWrite()
-      print("write3")
+      realm.beginWrite()
+      realm.add(contacts, update: .modified)
+      try realm.commitWrite()
       //}
     } catch let error as NSError {
       print("Error on Realm update", error)
@@ -65,9 +49,6 @@ class DatabaseService {
     DispatchQueue.global(qos: qos).async {
       autoreleasepool {
         do {
-          
-          let startTime = DispatchTime.now()
-          
           /// Thread safety in context current thread (just copy contact created in other thread or will be crash)
           if reduceMemoryUsage {
             /// Don't allocate copy of array contacts - possible reduce memory usage (but still high memory consumption on transaction)
@@ -89,16 +70,6 @@ class DatabaseService {
               realm.add(contactsThreadSafe, update: .modified)
             }
           }
-          
-          
-          
-          let endTime = DispatchTime.now()
-          let diffTimeNs = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-          let diffTimeS = Double(diffTimeNs) / 1_000_000_000
-          print("diffTime:\(diffTimeS) s diffTime:\(diffTimeNs) ns")
-          
-          
-          
         } catch let error as NSError {
           print("Error on Realm update in different queue", error)
         }
