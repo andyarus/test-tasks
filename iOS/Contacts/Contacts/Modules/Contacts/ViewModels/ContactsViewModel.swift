@@ -41,6 +41,7 @@ class ContactsViewModel {
   // MARK: Public Properties
   
   public let getContacts = PublishSubject<Bool>()
+  public let filterContacts = PublishSubject<String>()
   public let contacts = PublishSubject<[Contact]>()
   public let error = PublishSubject<Error>()
   
@@ -50,6 +51,10 @@ class ContactsViewModel {
     networkService = NetworkService(provider: provider)
     databaseService = DatabaseService()
     
+    setupRx()
+  }
+  
+  private func setupRx() {
     /// Input
     getContacts
       .subscribe(onNext: { [unowned self] must in
@@ -57,16 +62,54 @@ class ContactsViewModel {
         guard must else { return }
         self._getContacts()
       }).disposed(by: disposeBag)
+    
+    /// Filter
+    filterContacts
+      .subscribe(onNext: { [unowned self] filter in
+        print("filterContacts next filter:", filter)
+        guard !filter.isEmpty else { return }
+        self._getContacts(with: filter)
+      }).disposed(by: disposeBag)
+    
+    /// Save contacts to Realm
+    contacts
+      .subscribeOn(MainScheduler.instance)
+      .subscribe(onNext: { [unowned self] contacts in
+        print("ContactsViewModel contacts:", contacts.count)
+        
+        //self.databaseService.update(with: contacts)
+        //self.databaseService.update(with: contacts)
+        
+      }).disposed(by: disposeBag)
   }
   
-  // MARK: Public Methods
   
+  
+//  public func contact(at pos: Int) -> Contact? {
+//    guard pos < _contacts.count else { return nil }
+//    return _contacts[pos]
+//  }
+  
+  
+  
+  // MARK: Private Methods
+  
+  /// Get contacts from data source
   private func _getContacts() {
     
     print("getContacts thread:\(Thread.current)")
     
     /// Don't start new loading while previous not done yet
     guard !isContactsLoading else { return }
+    
+   // let test = databaseService.read()
+    //print("_contacts realm:", test.count)
+//    //self.contacts.onNext(contacts)
+//    return
+    
+    
+    
+    
     isContactsLoading = true
     
     Observable
@@ -78,6 +121,7 @@ class ContactsViewModel {
         switch event {
         case .next(let contacts):
           print("next contacts.count:", contacts.count, "contactsUnique:", Set(contacts).count)
+          self._contacts = contacts
           self.contacts.onNext(contacts)
         case .error(let error):
           print("event error", error)
@@ -91,17 +135,21 @@ class ContactsViewModel {
       }).disposed(by: disposeBag)
   }
   
-  public func loadData(with filter: String) {
-    //DispatchQueue.main.async { [unowned self] in
-      let matchingСontacts = self._contacts.filter { $0.name.hasPrefix(filter) }
-      self.contacts.onNext(matchingСontacts)
-    //}
+  /// Get filtered contacts
+  private func _getContacts(with filter: String) {
+    let contacts = self._contacts.filter {
+      if filter.isPhone() {
+        return $0.phone.contains(filter.clearPhone())
+      }
+      return $0.name.lowercased().hasPrefix(filter)
+    }
+    self.contacts.onNext(contacts)
   }
   
-  public func contact(at pos: Int) -> Contact? {
-    guard pos < _contacts.count else { return nil }
-    return _contacts[pos]
+  private func setContacts() {
+    
   }
+  
   
   // MARK: Private Methods
   
@@ -113,57 +161,6 @@ class ContactsViewModel {
         networkService.fetchContacts(forSource: 3)
       ]
   }
-  
-//  private func getMergedPages(forMax max: Int) -> Observable<[Contact]> {
-//    var pagesObservable = [Observable<[Contact]>]()
-//    for i in 1...max {
-//      pagesObservable.append(getNext(for: i))
-//    }
-//
-////    for i in 1...50 {
-////      var page = i % 3
-////      if page == 0 {
-////        page = 1
-////      }
-////      pagesObservable.append(getNext(for: page))
-////    }
-//
-//    let pagesSequence = Observable.from(pagesObservable)
-//    return pagesSequence.merge()
-//  }
-  
-//  private func getNext(for page: Int) -> Observable<[Contact]> {
-//
-//    //callbackQueue
-//    //Callback queue. If nil - queue from provider initializer will be used.
-//    //return provider.rx.request(.contacts(page: page), callbackQueue: DispatchQueue.main)
-//
-//    return provider.rx.request(.contacts(source: page))
-//      .filterSuccessfulStatusCodes()
-//      .map([Contact].self)
-//      .asObservable()
-//  }
-  
-  private func sources(max: Int) -> [Observable<[Contact]>] {
-    var result = [Observable<[Contact]>]()
-    for i in 1...max {
-      result.append(networkService.fetchContacts(forSource: i))
-      //result.append(getNext(source: i))
-    }
-    return result
-  }
-  
-//  private func getNext(source: Int) -> Observable<[Contact]> {
-//
-//    //callbackQueue
-//    //Callback queue. If nil - queue from provider initializer will be used.
-//    //return provider.rx.request(.contacts(page: page), callbackQueue: DispatchQueue.main)
-//
-//    return provider.rx.request(.contacts(source: source))
-//      .filterSuccessfulStatusCodes()
-//      .map([Contact].self)
-//      .asObservable()
-//  }
   
 }
 

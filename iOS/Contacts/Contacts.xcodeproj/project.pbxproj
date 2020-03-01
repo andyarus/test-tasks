@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		31141EE810DAE3F3A6B7CA98 /* Pods_ContactsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD160724122CD76FB92CBD4 /* Pods_ContactsTests.framework */; };
 		923C9B1924040368000D3AB5 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B1824040368000D3AB5 /* ErrorView.swift */; };
-		923C9B1B2404219C000D3AB5 /* String+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B1A2404219C000D3AB5 /* String+Format.swift */; };
 		923C9B1E24045189000D3AB5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B1D24045189000D3AB5 /* Utils.swift */; };
 		923C9B202404522B000D3AB5 /* String+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B1F2404522B000D3AB5 /* String+Date.swift */; };
 		923C9B2224045283000D3AB5 /* EducationPeriod+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923C9B2124045283000D3AB5 /* EducationPeriod+String.swift */; };
@@ -30,8 +29,8 @@
 		924A702324017656007F40DD /* Temperament.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A702224017656007F40DD /* Temperament.swift */; };
 		924A70252401B8F0007F40DD /* String+CapitalizingFirstLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */; };
 		925D742E240301CD00D0438D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925D742D240301CD00D0438D /* DatabaseService.swift */; };
+		926D7D1A240C4437002461E4 /* String+Phone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D7D19240C4437002461E4 /* String+Phone.swift */; };
 		92B71D5A24070788004BBF6B /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B71D5924070788004BBF6B /* Coordinator.swift */; };
-		92B71D5C2407080B004BBF6B /* Storyboarded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B71D5B2407080B004BBF6B /* Storyboarded.swift */; };
 		92B71D5E2407085C004BBF6B /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B71D5D2407085C004BBF6B /* MainCoordinator.swift */; };
 		9F2513B0F6A84C344CE52A5E /* Pods_Contacts_ContactsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AB76B159903E4EBA52D2675 /* Pods_Contacts_ContactsUITests.framework */; };
 		E511FB6028E83D9D6973F8D5 /* Pods_Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41680502F95F35562B68BA4A /* Pods_Contacts.framework */; };
@@ -63,7 +62,6 @@
 		725263ED8F349266894F0307 /* Pods-Contacts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts.debug.xcconfig"; path = "Target Support Files/Pods-Contacts/Pods-Contacts.debug.xcconfig"; sourceTree = "<group>"; };
 		7567F923B862F4AE7037A8A4 /* Pods-ContactsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsTests.debug.xcconfig"; path = "Target Support Files/Pods-ContactsTests/Pods-ContactsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		923C9B1824040368000D3AB5 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
-		923C9B1A2404219C000D3AB5 /* String+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Format.swift"; sourceTree = "<group>"; };
 		923C9B1D24045189000D3AB5 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		923C9B1F2404522B000D3AB5 /* String+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Date.swift"; sourceTree = "<group>"; };
 		923C9B2124045283000D3AB5 /* EducationPeriod+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EducationPeriod+String.swift"; sourceTree = "<group>"; };
@@ -90,8 +88,8 @@
 		924A702224017656007F40DD /* Temperament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperament.swift; sourceTree = "<group>"; };
 		924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CapitalizingFirstLetter.swift"; sourceTree = "<group>"; };
 		925D742D240301CD00D0438D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		926D7D19240C4437002461E4 /* String+Phone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Phone.swift"; sourceTree = "<group>"; };
 		92B71D5924070788004BBF6B /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
-		92B71D5B2407080B004BBF6B /* Storyboarded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboarded.swift; sourceTree = "<group>"; };
 		92B71D5D2407085C004BBF6B /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		9694D23F875623564BD1FD19 /* Pods-ContactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsTests.release.xcconfig"; path = "Target Support Files/Pods-ContactsTests/Pods-ContactsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C20DDD5185C96E0CAB610DDC /* Pods-Contacts-ContactsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Contacts-ContactsUITests.release.xcconfig"; path = "Target Support Files/Pods-Contacts-ContactsUITests/Pods-Contacts-ContactsUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 				925D742C240301BC00D0438D /* Services */,
 				9243E8C223FB1B67007A3DE9 /* Supporting Files */,
 				92B71D5924070788004BBF6B /* Coordinator.swift */,
-				92B71D5B2407080B004BBF6B /* Storyboarded.swift */,
 				92B71D5D2407085C004BBF6B /* MainCoordinator.swift */,
 			);
 			path = Contacts;
@@ -308,10 +305,10 @@
 			isa = PBXGroup;
 			children = (
 				923C9B1C24045127000D3AB5 /* Utils */,
-				924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */,
-				923C9B1A2404219C000D3AB5 /* String+Format.swift */,
-				923C9B1F2404522B000D3AB5 /* String+Date.swift */,
 				923C9B2124045283000D3AB5 /* EducationPeriod+String.swift */,
+				924A70242401B8F0007F40DD /* String+CapitalizingFirstLetter.swift */,
+				923C9B1F2404522B000D3AB5 /* String+Date.swift */,
+				926D7D19240C4437002461E4 /* String+Phone.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -599,13 +596,12 @@
 				9243E8D023FB1C9D007A3DE9 /* ProfileViewController.swift in Sources */,
 				9243953C23FDB8CF00173997 /* ContactsEndpoints.swift in Sources */,
 				924A700C24012B08007F40DD /* Contact.swift in Sources */,
-				92B71D5C2407080B004BBF6B /* Storyboarded.swift in Sources */,
 				923C9B1E24045189000D3AB5 /* Utils.swift in Sources */,
 				924A700E24012B8A007F40DD /* EducationPeriod.swift in Sources */,
 				925D742E240301CD00D0438D /* DatabaseService.swift in Sources */,
 				923C9B2224045283000D3AB5 /* EducationPeriod+String.swift in Sources */,
+				926D7D1A240C4437002461E4 /* String+Phone.swift in Sources */,
 				92478F9F240B1C4F007FF3BD /* NetworkService.swift in Sources */,
-				923C9B1B2404219C000D3AB5 /* String+Format.swift in Sources */,
 				92B71D5A24070788004BBF6B /* Coordinator.swift in Sources */,
 				9243E89223FB183A007A3DE9 /* AppDelegate.swift in Sources */,
 				924A701324016237007F40DD /* ContactsViewModel.swift in Sources */,

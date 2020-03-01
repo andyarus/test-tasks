@@ -82,22 +82,21 @@ class ContactsViewController: UIViewController {
       }
       .bind(to: viewModel.getContacts)
       .disposed(by: disposeBag)
-    
-    /// Get contacts
-//    refreshControl.rx.controlEvent(.valueChanged)
-//      .subscribe(onNext: { [unowned self] in
-//        guard self.refreshControl.isRefreshing else { return }
-//        self.viewModel.getContacts()
-//      }).disposed(by: disposeBag)
 
     /// Search contact
     searchController.searchBar.rx.text.orEmpty
       .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
       .distinctUntilChanged()
-      .subscribe(onNext: { [unowned self] filter in
-        self.viewModel.loadData(with: filter)
-      })
+      .bind(to: viewModel.filterContacts)
       .disposed(by: disposeBag)
+    
+//    searchController.searchBar.rx.text.orEmpty
+//      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+//      .distinctUntilChanged()
+//      .subscribe(onNext: { [unowned self] filter in
+//        self.viewModel.loadData(with: filter)
+//      })
+//      .disposed(by: disposeBag)
 
     viewWillAppear(true)
     

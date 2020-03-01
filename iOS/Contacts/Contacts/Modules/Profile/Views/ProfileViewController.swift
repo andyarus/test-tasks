@@ -194,7 +194,7 @@ class ProfileViewController: UIViewController {
     nameLabel.text = contact.name
     educationPeriodLabel.text = contact.educationPeriod?.toString()
     temperamentLabel.text = contact.temperament.value()
-    phoneButton.setTitle(contact.phone, for: .normal)
+    phoneButton.setTitle(contact.phone.formatPhone(), for: .normal)
     biographyTextView.text = contact.biography
   }
 

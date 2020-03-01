@@ -63,6 +63,7 @@ class Contact: Object, Decodable {
     id = try container.decode(String.self, forKey: .id)
     name = try container.decode(String.self, forKey: .name)
     phone = try container.decode(String.self, forKey: .phone)
+    phone = phone.clearPhone()
     height = try container.decode(Double.self, forKey: .height)
     biography = try container.decode(String.self, forKey: .biography)
     _temperament = try container.decode(String.self, forKey: .temperament)

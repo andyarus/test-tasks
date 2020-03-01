@@ -7,15 +7,9 @@
 //
 
 import RealmSwift
-//import RxRealm
 import RxSwift
 
 class DatabaseService {
-  
-  // MARK: Private Properties
-  
-  //private let disposeBag = DisposeBag()
-  //private var realm: Realm!
   
   // MARK: Init
   
@@ -49,19 +43,18 @@ class DatabaseService {
   
   /// Update in the same thred
   public func update(with contacts: [Contact]) {
-    
-    //delete()
-    
     do {
       print()
-      print("update")
+      print("update", Thread.current)
       let realm = try Realm()
-      try realm.write {
+      //try realm.write {
         print("write")
-        //realm.beginWrite()
+        realm.beginWrite()
         realm.add(contacts, update: .modified)
-        //try realm.commitWrite()
-      }
+      print("write1")
+        try realm.commitWrite()
+      print("write3")
+      //}
     } catch let error as NSError {
       print("Error on Realm update", error)
     }
