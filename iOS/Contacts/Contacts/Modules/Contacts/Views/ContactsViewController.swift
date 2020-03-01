@@ -14,16 +14,21 @@ import Moya
 
 class ContactsViewController: UIViewController {
   
+  // MARK: - Static Create Method
+  
+  static func create(with viewModel: ContactsViewModel) -> ContactsViewController {
+    let vc = ContactsViewController()
+    vc.viewModel = viewModel
+    return vc
+  }
+  
   // MARK: - Coordinator
   
   weak var coordinator: MainCoordinator?
   
-  // MARK: - Public Properties
-  
-  public var viewModel: ContactsViewModel!
-  
   // MARK: - Private Properties
   
+  private var viewModel: ContactsViewModel!
   private var disposeBag = DisposeBag()
   
   // MARK: - Private View Properties
@@ -67,6 +72,8 @@ class ContactsViewController: UIViewController {
     //setupRx()
     //loadData()
   }
+  
+  // MARK: - Setup Rx
   
   private func setupRx() -> Bool {
     /// Get contacts

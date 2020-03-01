@@ -16,26 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-//    window = UIWindow(frame: UIScreen.main.bounds)
-//    let vc = ContactsViewController()
-//    vc.viewModel = ContactsViewModel()
-//    let nc = UINavigationController(rootViewController: vc)
-//    window?.rootViewController = nc
-//    window?.makeKeyAndVisible()
-    
-    
-    
-    // create the main navigation controller to be used for our app
+    /// Create the main navigation controller to be used for our app
     let nc = UINavigationController()
     
-    // send that into our coordinator so that it can display view controllers
+    /// Send that into our coordinator so that it can display view controllers
     coordinator = MainCoordinator(navigationController: nc)
     
-    // tell the coordinator to take over control
+    /// Tell the coordinator to take over control
     coordinator?.start()
     
-    // create a basic UIWindow and activate it
+    /// Create a basic UIWindow and activate it
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.rootViewController = nc
     window?.makeKeyAndVisible()

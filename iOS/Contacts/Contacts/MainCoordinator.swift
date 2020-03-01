@@ -20,19 +20,13 @@ class MainCoordinator: Coordinator {
   }
 
   func start() {
-    let vc = ContactsViewController()
+    let vc = ContactsViewController.create(with: ContactsViewModel(provider: MoyaProvider<Contacts>()))
     vc.coordinator = self
-    
-    let provider = MoyaProvider<Contacts>()
-    //let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin()])
-    //private let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
-    
-    vc.viewModel = ContactsViewModel(provider: provider)
     navigationController.pushViewController(vc, animated: false)
   }
   
   func openProfile(for contact: Contact) {
-    let vc = ProfileViewController(contact: contact)
+    let vc = ProfileViewController.create(with: ProfileViewModel(contact: contact))
     vc.coordinator = self
     navigationController.pushViewController(vc, animated: true)
   }

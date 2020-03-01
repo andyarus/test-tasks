@@ -7,16 +7,27 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ProfileViewController: UIViewController {
+  
+  // MARK: - Static Create Method
+  
+  static func create(with viewModel: ProfileViewModel) -> ProfileViewController {
+    let vc = ProfileViewController()
+    vc.viewModel = viewModel
+    return vc
+  }
   
   // MARK: - Coordinator
   
   weak var coordinator: MainCoordinator?
   
-  // MARK: Public Properties
+  // MARK: - Private Properties
   
-  public var contact: Contact!
+  private var viewModel: ProfileViewModel!
+  private let disposeBag = DisposeBag()
   
   // MARK: Private View Properties
   
@@ -79,14 +90,6 @@ class ProfileViewController: UIViewController {
     return textView
   }()
   
-  // MARK: - Convenience Init
-  
-  convenience init(contact: Contact) {
-    self.init(nibName: nil, bundle: nil)
-
-    self.contact = contact
-  }
-  
   // MARK: - Lifecycle
   
   override func viewDidLoad() {
@@ -114,7 +117,9 @@ class ProfileViewController: UIViewController {
     addSubviews()
     setupUI()
     setupConstraints()
-    setupData()
+    
+    setupRx()
+    loadProfile()
   }
   
   private func addSubviews() {
@@ -200,12 +205,40 @@ class ProfileViewController: UIViewController {
     )
   }
   
-  private func setupData() {
-    nameLabel.text = contact.name
-    educationPeriodLabel.text = contact.educationPeriod?.toString()
-    temperamentLabel.text = contact.temperament.value()
-    phoneButton.setTitle(contact.phone.formatPhone(), for: .normal)
-    biographyTextView.text = contact.biography
+  // MARK: - Setup Rx
+  
+  private func setupRx() {
+    viewModel.name
+      .bind(to: nameLabel.rx.text)
+      .disposed(by: disposeBag)
+    
+    viewModel.educationPeriod
+      .bind(to: educationPeriodLabel.rx.text)
+      .disposed(by: disposeBag)
+    
+    viewModel.temperament
+      .bind(to: temperamentLabel.rx.text)
+      .disposed(by: disposeBag)
+    
+    viewModel.phone
+      .subscribe(onNext: { [unowned self] title in
+        self.phoneButton.setTitle(title, for: .normal)
+      }).disposed(by: disposeBag)
+    
+    viewModel.biography
+      .bind(to: biographyTextView.rx.text)
+      .disposed(by: disposeBag)
+    
+    phoneButton.rx.tap
+      .subscribe(onNext: {
+        guard let phone = self.phoneButton.title(for: .normal),
+          let url = URL(string: "tel://\(phone.clearPhone())") else { return }
+        UIApplication.shared.open(url)
+      }).disposed(by: disposeBag)
+  }
+  
+  private func loadProfile() {
+    viewModel.profile.onNext(())
   }
 
 }

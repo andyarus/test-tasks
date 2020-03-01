@@ -11,6 +11,15 @@ import RxSwift
 
 class ContactsViewModel: ContactsViewModelType {
   
+  // MARK: Public Properties
+  
+  /// Input
+  public let getContacts = PublishSubject<Bool>()
+  public let getFilteredContacts = PublishSubject<String>()  
+  /// Output
+  public let contacts = PublishSubject<[Contact]>()
+  public let error = PublishSubject<Error>()
+  
   // MARK: Private Properties
   
   private let disposeBag = DisposeBag()
@@ -37,13 +46,6 @@ class ContactsViewModel: ContactsViewModelType {
   
   private let networkService: NetworkService!
   private let databaseService: DatabaseService!
-  
-  // MARK: Public Properties
-  
-  public let getContacts = PublishSubject<Bool>()
-  public let getFilteredContacts = PublishSubject<String>()
-  public let contacts = PublishSubject<[Contact]>()
-  public let error = PublishSubject<Error>()
   
   // MAKR: - Init
   

@@ -33,6 +33,8 @@
 		926D7D25240C6177002461E4 /* ContactsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D7D24240C6177002461E4 /* ContactsViewModelType.swift */; };
 		926D7D28240C61B7002461E4 /* NetworkServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D7D27240C61B7002461E4 /* NetworkServiceType.swift */; };
 		926D7D2A240C61C2002461E4 /* DatabaseServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D7D29240C61C2002461E4 /* DatabaseServiceType.swift */; };
+		926D7D2E240C6B34002461E4 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D7D2D240C6B34002461E4 /* ProfileViewModel.swift */; };
+		926D7D32240C6B4C002461E4 /* ProfileViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D7D31240C6B4C002461E4 /* ProfileViewModelType.swift */; };
 		92B71D5A24070788004BBF6B /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B71D5924070788004BBF6B /* Coordinator.swift */; };
 		92B71D5E2407085C004BBF6B /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B71D5D2407085C004BBF6B /* MainCoordinator.swift */; };
 		9F2513B0F6A84C344CE52A5E /* Pods_Contacts_ContactsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AB76B159903E4EBA52D2675 /* Pods_Contacts_ContactsUITests.framework */; };
@@ -95,6 +97,8 @@
 		926D7D24240C6177002461E4 /* ContactsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModelType.swift; sourceTree = "<group>"; };
 		926D7D27240C61B7002461E4 /* NetworkServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceType.swift; sourceTree = "<group>"; };
 		926D7D29240C61C2002461E4 /* DatabaseServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceType.swift; sourceTree = "<group>"; };
+		926D7D2D240C6B34002461E4 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		926D7D31240C6B4C002461E4 /* ProfileViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelType.swift; sourceTree = "<group>"; };
 		92B71D5924070788004BBF6B /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		92B71D5D2407085C004BBF6B /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		9694D23F875623564BD1FD19 /* Pods-ContactsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsTests.release.xcconfig"; path = "Target Support Files/Pods-ContactsTests/Pods-ContactsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -286,6 +290,8 @@
 		9243E8CB23FB1C57007A3DE9 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				926D7D2C240C6B1C002461E4 /* Implementations */,
+				926D7D2B240C6B19002461E4 /* Protocols */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -368,6 +374,22 @@
 			children = (
 				925D742D240301CD00D0438D /* DatabaseService.swift */,
 				92478F9E240B1C4F007FF3BD /* NetworkService.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		926D7D2B240C6B19002461E4 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				926D7D31240C6B4C002461E4 /* ProfileViewModelType.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		926D7D2C240C6B1C002461E4 /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				926D7D2D240C6B34002461E4 /* ProfileViewModel.swift */,
 			);
 			path = Implementations;
 			sourceTree = "<group>";
@@ -639,11 +661,13 @@
 				926D7D2A240C61C2002461E4 /* DatabaseServiceType.swift in Sources */,
 				92B71D5A24070788004BBF6B /* Coordinator.swift in Sources */,
 				926D7D28240C61B7002461E4 /* NetworkServiceType.swift in Sources */,
+				926D7D2E240C6B34002461E4 /* ProfileViewModel.swift in Sources */,
 				9243E89223FB183A007A3DE9 /* AppDelegate.swift in Sources */,
 				924A701324016237007F40DD /* ContactsViewModel.swift in Sources */,
 				92B71D5E2407085C004BBF6B /* MainCoordinator.swift in Sources */,
 				924A70202401753E007F40DD /* ContactTableViewCell.swift in Sources */,
 				923C9B202404522B000D3AB5 /* String+Date.swift in Sources */,
+				926D7D32240C6B4C002461E4 /* ProfileViewModelType.swift in Sources */,
 				923C9B1924040368000D3AB5 /* ErrorView.swift in Sources */,
 				9243E8CE23FB1C88007A3DE9 /* ContactsViewController.swift in Sources */,
 			);
