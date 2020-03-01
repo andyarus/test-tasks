@@ -55,23 +55,17 @@ class ContactsViewController: UIViewController {
     assert(rxSetupCompleted == true, "Rx setup failed")
   }
   
-  override func viewWillDisappear(_ animated: Bool) {
-    //searchController.dismiss(animated: false)
-  }
-  
   // MARK: - Setup Methods
   
   private func setup() {
     addSubviews()
     setupUI()
     setupConstraints()
+    
+    /// Problem if setup on viewDidLoad
+    /// https://github.com/RxSwiftCommunity/RxDataSources/issues/331
     //setupRx()
-    loadData()
-  }
-  
-  private func loadData() {
-    //indicatorView.startAnimating()
-    //viewModel.getContacts.onNext(true)
+    //loadData()
   }
   
   private func setupRx() -> Bool {
@@ -117,12 +111,14 @@ class ContactsViewController: UIViewController {
         self.coordinator?.openProfile(for: contact)
       }).disposed(by: disposeBag)
     
+    loadData()
+    
     return true
   }
   
-  private func endRefreshing() {
-    indicatorView.stopAnimating()
-    refreshControl.endRefreshing()
+  private func loadData() {
+    indicatorView.startAnimating()
+    viewModel.getContacts.onNext(true)
   }
   
   private func addSubviews() {
@@ -143,12 +139,9 @@ class ContactsViewController: UIViewController {
   
   private func setupNavigationBar() {
     /// Large title
-    //navigationController?.navigationItem.largeTitleDisplayMode = .always
     navigationController?.navigationBar.prefersLargeTitles = true
     
-    /// Hide navigation bar bottom border
-//    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-//    navigationController?.navigationBar.shadowImage = UIImage()
+    /// TODO in iOS13 default tint bar color definition changed - find out way set like on test task screen
   }
   
   private func setupNavigationTitle() {
@@ -163,94 +156,6 @@ class ContactsViewController: UIViewController {
     definesPresentationContext = true
     searchController.obscuresBackgroundDuringPresentation = false
     searchController.dimsBackgroundDuringPresentation = false
-    
-//    definesPresentationContext = true
-//    searchController.obscuresBackgroundDuringPresentation = false
-//    searchController.dimsBackgroundDuringPresentation = true
-    
-    
-    //navigationController?.navigationBar.isTranslucent = false
-    //navigationController?.navigationBar.backgroundColor = .white
-    
-    //navigationController?.view.backgroundColor = .red
-    
-    //navigationController?.extendedLayoutIncludesOpaqueBars = true
-    
-    //navigationController?.navigationBar.isTranslucent = false
-    
-    
-    
-    
-//    print("navigationController?.navigationBar.tintColor:\(navigationController?.navigationBar.barTintColor)")
-//    print("navigationController?.navigationBar.barTintColor:\(navigationController?.navigationBar.barTintColor)")
-//    print("navigationController?.navigationBar.backgroundColor:\(navigationController?.navigationBar.backgroundColor)")
-
-
-    //navigationController?.navigationBar.backgroundColor = .blue
-    
-    
-//    let tintColor = navigationController?.navigationBar.barTintColor
-//    navigationController?.navigationBar.barTintColor = tintColor
-//    navigationController?.navigationBar.backgroundColor = tintColor
-    
-    
-    
-    
-    
-//    let bottomBorder = UIView(frame: CGRect(x: 0,
-//                                      y: navigationController!.navigationBar.frame.size.height - 1,
-//                                      width: navigationController!.navigationBar.frame.size.width,
-//                                      height: 1.0))
-//    bottomBorder.backgroundColor = .lightGray
-//    navigationController?.navigationBar.addSubview(bottomBorder)
-    
-    
-    
-    
-    
-//    /// Hack for hiding standard borders
-//    searchController.searchBar.backgroundImage = UIImage()
-//    /// Hack for adding bottom border
-//    let bottomBorder = UIView(frame: CGRect(x: 0,
-//                                      y: searchController.searchBar.frame.size.height - 1,
-//                                      width: searchController.searchBar.frame.size.width,
-//                                      height: 1.0))
-//    bottomBorder.backgroundColor = .lightGray
-//    searchController.searchBar.addSubview(bottomBorder)
-    
-    
-//    searchController.searchBar.rx.text.orEmpty
-//      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-//      .distinctUntilChanged()
-//      .subscribe(onNext: { [unowned self] filter in
-//        self.viewModel.loadData(with: filter)
-//      })
-//      .disposed(by: disposeBag)
-    
-//    let searchResults = searchController.searchBar.rx.text.orEmpty
-//      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-//      .distinctUntilChanged()
-//      .flatMapLatest { query -> Observable<[Contact]> in
-//        print(query)
-//        if query.isEmpty {
-//          return .just([])
-//        }
-//        return self.viewModel.getContacts(with: query)
-//          .catchErrorJustReturn([])
-//      }
-//      .observeOn(MainScheduler.instance)
-//
-//    print("searchResults:\(searchResults)")
-    
-//    tableView.delegate = nil
-//    tableView.dataSource = nil
-
-//    searchResults
-//      .bind(to: tableView.rx.items(cellIdentifier: ContactTableViewCell.reuseIdentifier,
-//                                   cellType: ContactTableViewCell.self)) { (row, element, cell) in
-//        cell.configure(for: element)
-//      }
-//      .disposed(by: disposeBag)
   }
   
   private func setupTableView() {
@@ -275,7 +180,6 @@ class ContactsViewController: UIViewController {
   }
   
   private func setupConstraints() {
-    
     let tableViewConstraints: [NSLayoutConstraint] = [
       view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 0.0),
       view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0.0),
@@ -286,6 +190,11 @@ class ContactsViewController: UIViewController {
     NSLayoutConstraint.activate(
       tableViewConstraints
     )
+  }
+  
+  private func endRefreshing() {
+    indicatorView.stopAnimating()
+    refreshControl.endRefreshing()
   }
   
 }

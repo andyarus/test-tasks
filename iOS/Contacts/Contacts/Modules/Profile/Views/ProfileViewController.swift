@@ -101,6 +101,13 @@ class ProfileViewController: UIViewController {
     setupNavigationTitle()
   }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    /// Large title enable
+    navigationController?.navigationBar.prefersLargeTitles = true
+  }
+  
   // MARK: - Setup Methods
   
   private func setup() {
@@ -127,6 +134,9 @@ class ProfileViewController: UIViewController {
   private func setupNavigationTitle() {
     /// Clear back button text
     navigationController?.navigationBar.topItem?.title = ""
+    
+    /// Large title disable
+    navigationController?.navigationBar.prefersLargeTitles = false
   }
   
   private func setupConstraints() {    

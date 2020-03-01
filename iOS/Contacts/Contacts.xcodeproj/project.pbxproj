@@ -155,13 +155,6 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		9243706B2405B2D4005915B3 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
 		9243E88523FB183A007A3DE9 = {
 			isa = PBXGroup;
 			children = (
@@ -266,7 +259,6 @@
 		9243E8C723FB1BF7007A3DE9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				9243706B2405B2D4005915B3 /* Search */,
 				923C9B1724040359000D3AB5 /* Error */,
 				924A701424016BED007F40DD /* Cells */,
 				9243E8CD23FB1C88007A3DE9 /* ContactsViewController.swift */,

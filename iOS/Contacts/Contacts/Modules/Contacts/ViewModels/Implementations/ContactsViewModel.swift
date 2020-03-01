@@ -19,7 +19,7 @@ class ContactsViewModel: ContactsViewModelType {
   private var contactsFilter = ""
   
   private let lastUpdateTimeKey = "lastUpdateTime"
-  private let lastUpdateTimeLimit = 10.0 // Seconds
+  private let lastUpdateTimeLimit = 60.0 // Seconds
   private var lastUpdateTime: TimeInterval {
     get {
       let defaults = UserDefaults.standard
@@ -28,7 +28,6 @@ class ContactsViewModel: ContactsViewModelType {
     set {
       let defaults = UserDefaults.standard
       defaults.setValue(newValue, forKey: lastUpdateTimeKey)
-      defaults.synchronize()
     }
   }
   
@@ -69,7 +68,6 @@ class ContactsViewModel: ContactsViewModelType {
     getFilteredContacts
       .subscribe(onNext: { [unowned self] filter in
         self.contactsFilter = filter
-        guard !self.isContactsLoading else { return }
         self._getContacts(with: filter)
       }).disposed(by: disposeBag)
   }
@@ -78,24 +76,18 @@ class ContactsViewModel: ContactsViewModelType {
   
   /// Get contacts from data source
   private func _getContacts() {
-    
-    print("getContacts thread:\(Thread.current)")
-    
     /// Don't start new loading while previous not done yet
     guard !isContactsLoading else { return }
     
     /// Load contacts from local storage if update time limit not exceeded
     if useLocalStorage() {
-      let test = databaseService.read()
-      print("_contacts realm:", test.count)
-      self.contacts.onNext(test)
+      _contacts = databaseService.read()
+      contacts.onNext(_contacts)
       return
     }
     
     /// Load contacts from network
-    
     isContactsLoading = true
-    
     Observable
       .merge(contactsSources())
       .reduce([], accumulator: +)
@@ -104,7 +96,6 @@ class ContactsViewModel: ContactsViewModelType {
       .subscribe(onNext: { [unowned self] event in
         switch event {
         case .next(let contacts):
-          print("next contacts.count:", contacts.count, "contactsUnique:", Set(contacts).count)
           //self._contacts = Array(Set(contacts)) /// Remove duplicates
           self._contacts = contacts.sorted { $0.name < $1.name }
           
@@ -119,11 +110,9 @@ class ContactsViewModel: ContactsViewModelType {
           /// Save contacts to local storage
           self.saveContacts(self._contacts)
         case .error(let error):
-          print("event error", error)
+          print("error", error)
           self.error.onNext(error)
         default:
-          //case .completed:
-          print("default completed")
           break
         }
         self.isContactsLoading = false
@@ -167,7 +156,7 @@ extension ContactsViewModel {
   
   private func useLocalStorage() -> Bool {
     let currentTime = Date().timeIntervalSince1970
-    let leftTime = currentTime - self.lastUpdateTime
+    let leftTime = currentTime - lastUpdateTime
     if leftTime < lastUpdateTimeLimit {
       return true
     }
