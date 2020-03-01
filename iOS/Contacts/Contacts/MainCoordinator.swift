@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Moya
 
 class MainCoordinator: Coordinator {
   
@@ -21,7 +22,12 @@ class MainCoordinator: Coordinator {
   func start() {
     let vc = ContactsViewController()
     vc.coordinator = self
-    vc.viewModel = ContactsViewModel()
+    
+    let provider = MoyaProvider<Contacts>()
+    //let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin()])
+    //private let provider = MoyaProvider<Contacts>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
+    
+    vc.viewModel = ContactsViewModel(provider: provider)
     navigationController.pushViewController(vc, animated: false)
   }
   

@@ -11,6 +11,8 @@ target 'Contacts' do
   pod 'RxCocoa', '~> 5'
   pod 'RealmSwift'
   #pod "RxRealm"
+  
+  #pod 'RxSwiftExt', '~> 5'
 
   target 'ContactsTests' do
     inherit! :search_paths

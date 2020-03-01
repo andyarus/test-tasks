@@ -21,6 +21,7 @@
 		9243E8B423FB183B007A3DE9 /* ContactsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243E8B323FB183B007A3DE9 /* ContactsUITests.swift */; };
 		9243E8CE23FB1C88007A3DE9 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243E8CD23FB1C88007A3DE9 /* ContactsViewController.swift */; };
 		9243E8D023FB1C9D007A3DE9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9243E8CF23FB1C9D007A3DE9 /* ProfileViewController.swift */; };
+		92478F9F240B1C4F007FF3BD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92478F9E240B1C4F007FF3BD /* NetworkService.swift */; };
 		924A700C24012B08007F40DD /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A700B24012B08007F40DD /* Contact.swift */; };
 		924A700E24012B8A007F40DD /* EducationPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A700D24012B8A007F40DD /* EducationPeriod.swift */; };
 		924A701324016237007F40DD /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A701224016237007F40DD /* ContactsViewModel.swift */; };
@@ -80,6 +81,7 @@
 		9243E8B523FB183B007A3DE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9243E8CD23FB1C88007A3DE9 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		9243E8CF23FB1C9D007A3DE9 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		92478F9E240B1C4F007FF3BD /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		924A700B24012B08007F40DD /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		924A700D24012B8A007F40DD /* EducationPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EducationPeriod.swift; sourceTree = "<group>"; };
 		924A701224016237007F40DD /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				925D742D240301CD00D0438D /* DatabaseService.swift */,
+				92478F9E240B1C4F007FF3BD /* NetworkService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				924A700E24012B8A007F40DD /* EducationPeriod.swift in Sources */,
 				925D742E240301CD00D0438D /* DatabaseService.swift in Sources */,
 				923C9B2224045283000D3AB5 /* EducationPeriod+String.swift in Sources */,
+				92478F9F240B1C4F007FF3BD /* NetworkService.swift in Sources */,
 				923C9B1B2404219C000D3AB5 /* String+Format.swift in Sources */,
 				92B71D5A24070788004BBF6B /* Coordinator.swift in Sources */,
 				9243E89223FB183A007A3DE9 /* AppDelegate.swift in Sources */,

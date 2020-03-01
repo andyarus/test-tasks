@@ -9,7 +9,7 @@
 import Moya
 
 public enum Contacts {
-  case contacts(page: Int)
+  case contacts(source: Int)
 }
 
 extension Contacts: TargetType {
@@ -18,8 +18,8 @@ extension Contacts: TargetType {
   
   public var path: String {
     switch self {
-    case .contacts(let page):
-      return String(format: "/SkbkonturMobile/mobile-test-ios/master/json/generated-%02d.json", page)
+    case .contacts(let source):
+      return String(format: "/SkbkonturMobile/mobile-test-ios/master/json/generated-%02d.json", source)
     }
   }
   
@@ -46,26 +46,3 @@ extension Contacts: TargetType {
   }
   
 }
-
-// MARK: - Response Handlers
-
-public extension Moya.Response {
-  
-//  public func map<T: Decodable>(_ type: T.Type)
-//    throws -> T {
-//    return try type.decode(try self.mapJSON())
-//  }
-//  
-//  public func map<T: Decodable>(_ type: [T.Type]) throws -> [T] {
-//    return try Array<T>.decode(try self.mapJSON())
-//  }
-  
-//    func mapNSArray() throws -> NSArray {
-//        let any = try self.mapJSON()
-//        guard let array = any as? NSArray else {
-//            throw MoyaError.jsonMapping(self)
-//        }
-//        return array
-//    }
-}
-
