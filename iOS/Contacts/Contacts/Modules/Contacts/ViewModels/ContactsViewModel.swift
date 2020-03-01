@@ -16,6 +16,7 @@ class ContactsViewModel {
   private let disposeBag = DisposeBag()
   
   private var _contacts = [Contact]()
+  private var contactsFilter = ""
   
   private let lastUpdateTimeKey = "lastUpdateTime"
   private let lastUpdateTimeLimit = 1.0 // Seconds
@@ -41,7 +42,7 @@ class ContactsViewModel {
   // MARK: Public Properties
   
   public let getContacts = PublishSubject<Bool>()
-  public let filterContacts = PublishSubject<String>()
+  public let getFilteredContacts = PublishSubject<String>()
   public let contacts = PublishSubject<[Contact]>()
   public let error = PublishSubject<Error>()
   
@@ -54,43 +55,35 @@ class ContactsViewModel {
     setupRx()
   }
   
+  // MAKR: - Setup Rx
+  
   private func setupRx() {
     /// Input
     getContacts
       .subscribe(onNext: { [unowned self] must in
-        print("getContacts next must:", must)
         guard must else { return }
         self._getContacts()
       }).disposed(by: disposeBag)
     
     /// Filter
-    filterContacts
+    getFilteredContacts
       .subscribe(onNext: { [unowned self] filter in
-        print("filterContacts next filter:", filter)
-        guard !filter.isEmpty else { return }
+        self.contactsFilter = filter
+        guard !self.isContactsLoading else { return }
         self._getContacts(with: filter)
       }).disposed(by: disposeBag)
     
     /// Save contacts to Realm
-    contacts
-      .subscribeOn(MainScheduler.instance)
-      .subscribe(onNext: { [unowned self] contacts in
-        print("ContactsViewModel contacts:", contacts.count)
-        
-        //self.databaseService.update(with: contacts)
-        //self.databaseService.update(with: contacts)
-        
-      }).disposed(by: disposeBag)
+//    contacts
+//      .subscribeOn(MainScheduler.instance)
+//      .subscribe(onNext: { [unowned self] contacts in
+//        print("ContactsViewModel contacts:", contacts.count)
+//        
+//        self.databaseService.update(with: contacts)
+//        //self.databaseService.update(with: contacts, qos: .background)
+//        
+//      }).disposed(by: disposeBag)
   }
-  
-  
-  
-//  public func contact(at pos: Int) -> Contact? {
-//    guard pos < _contacts.count else { return nil }
-//    return _contacts[pos]
-//  }
-  
-  
   
   // MARK: Private Methods
   
@@ -102,9 +95,9 @@ class ContactsViewModel {
     /// Don't start new loading while previous not done yet
     guard !isContactsLoading else { return }
     
-   // let test = databaseService.read()
-    //print("_contacts realm:", test.count)
-//    //self.contacts.onNext(contacts)
+    let test = databaseService.read()
+    print("_contacts realm:", test.count)
+//    self.contacts.onNext(test)
 //    return
     
     
@@ -121,8 +114,16 @@ class ContactsViewModel {
         switch event {
         case .next(let contacts):
           print("next contacts.count:", contacts.count, "contactsUnique:", Set(contacts).count)
-          self._contacts = contacts
-          self.contacts.onNext(contacts)
+          //self._contacts = Array(Set(contacts)) /// Remove duplicates
+          self._contacts = contacts.sorted { $0.name < $1.name }
+          
+          /// If filtering now
+          guard self.contactsFilter.isEmpty else {
+            self._getContacts(with: self.contactsFilter)
+            return
+          }
+          
+          self.contacts.onNext(self._contacts)
         case .error(let error):
           print("event error", error)
           self.error.onNext(error)
@@ -138,20 +139,14 @@ class ContactsViewModel {
   /// Get filtered contacts
   private func _getContacts(with filter: String) {
     let contacts = self._contacts.filter {
+      guard !filter.isEmpty else { return true }
       if filter.isPhone() {
         return $0.phone.contains(filter.clearPhone())
       }
-      return $0.name.lowercased().hasPrefix(filter)
+      return $0.name.lowercased().contains(filter.lowercased())
     }
     self.contacts.onNext(contacts)
   }
-  
-  private func setContacts() {
-    
-  }
-  
-  
-  // MARK: Private Methods
   
   private func contactsSources() -> [Observable<[Contact]>] {
     return

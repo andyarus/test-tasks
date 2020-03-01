@@ -70,8 +70,8 @@ class ContactsViewController: UIViewController {
   }
   
   private func loadData() {
-    indicatorView.startAnimating()
-    viewModel.getContacts.onNext(true)
+    //indicatorView.startAnimating()
+    //viewModel.getContacts.onNext(true)
   }
   
   private func setupRx() -> Bool {
@@ -84,21 +84,12 @@ class ContactsViewController: UIViewController {
       .disposed(by: disposeBag)
 
     /// Search contact
-    searchController.searchBar.rx.text.orEmpty
+    searchController.searchBar.rx.text
+      .orEmpty
       .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
       .distinctUntilChanged()
-      .bind(to: viewModel.filterContacts)
+      .bind(to: viewModel.getFilteredContacts)
       .disposed(by: disposeBag)
-    
-//    searchController.searchBar.rx.text.orEmpty
-//      .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
-//      .distinctUntilChanged()
-//      .subscribe(onNext: { [unowned self] filter in
-//        self.viewModel.loadData(with: filter)
-//      })
-//      .disposed(by: disposeBag)
-
-    viewWillAppear(true)
     
     /// Contacts processing
     viewModel.contacts
