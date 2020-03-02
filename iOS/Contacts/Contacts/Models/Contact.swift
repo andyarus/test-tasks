@@ -16,10 +16,10 @@ class Contact: Object, Decodable {
   dynamic var height: Double = 0.0
   dynamic var biography: String = ""
   
-  private dynamic var _temperament = Temperament.melancholic.rawValue
-  dynamic var temperament: Temperament {
-      get { return Temperament(rawValue: _temperament)! }
-      set { _temperament = newValue.rawValue }
+  dynamic var _temperament = Temperament.melancholic.rawValue
+  var temperament: Temperament {
+    get { return Temperament(rawValue: _temperament)! }
+    set { _temperament = newValue.rawValue }
   }
   dynamic var educationPeriod: EducationPeriod? = nil
 
